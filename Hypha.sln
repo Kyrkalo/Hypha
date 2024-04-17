@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypha", "Hypha.Core\Hypha.csproj", "{27920EDE-8F9D-4F29-9037-2617C7D88B8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hypha.Core.Tests", "Hypha.Core.Tests\Hypha.Core.Tests.csproj", "{8E137043-9CD0-4F58-B9E4-B77FECFB1938}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27920EDE-8F9D-4F29-9037-2617C7D88B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27920EDE-8F9D-4F29-9037-2617C7D88B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27920EDE-8F9D-4F29-9037-2617C7D88B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27920EDE-8F9D-4F29-9037-2617C7D88B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E137043-9CD0-4F58-B9E4-B77FECFB1938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E137043-9CD0-4F58-B9E4-B77FECFB1938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E137043-9CD0-4F58-B9E4-B77FECFB1938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E137043-9CD0-4F58-B9E4-B77FECFB1938}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {936E283E-CE3E-476C-9F63-9F90DA7D9917}
+	EndGlobalSection
+EndGlobal
