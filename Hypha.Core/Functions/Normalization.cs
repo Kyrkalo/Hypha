@@ -1,7 +1,7 @@
 ﻿using Hypha.Interfaces;
 using System.Runtime.CompilerServices;
 
-namespace Hypha.ActivationFunctions;
+namespace Hypha.Functions;
 
 /// <summary>
 /// Normalization function for input values.

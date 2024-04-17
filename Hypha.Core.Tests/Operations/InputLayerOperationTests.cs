@@ -1,4 +1,4 @@
-﻿using Hypha.ActivationFunctions;
+﻿using Hypha.Functions;
 using Hypha.Operations;
 
 namespace Hypha.Core.Tests.Operations;

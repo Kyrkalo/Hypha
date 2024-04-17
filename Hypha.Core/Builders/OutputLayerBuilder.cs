@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hypha.Interfaces;
+using Hypha.Models;
+using Hypha.Records;
 
 namespace Hypha.Builders;
 
-internal class OutputLayerBuilder : IDisposable
+internal class OutputLayerBuilder : IBuilder<OutputLayer>, IDisposable
 {
-    public void Dispose()
-    {
-        throw new NotImplementedException();
-    }
+    private Setup setup;
+
+    public void Setup(Setup setup) => this.setup = setup;
+
+    public OutputLayer Build() => new() { Outputs = new decimal[setup.Outputs] };
+
+    public void Dispose() { }
 }

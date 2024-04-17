@@ -22,15 +22,15 @@ internal class HiddenLayerOperation : IOperation
         if (layer is null)
             return default;
         
-        var output = new double[layer.Length];
+        //var output = new double[layer.Length];
 
-        for(int i = 0; i < layer.Length; i++)
-        {
-            //double value = neuronOperation.Forward(layer.GetNeuron<Neuron>(i), input);
-            //output[i] = activationFunction.Output(value);
-        }
+        //for(int i = 0; i < layer.Length; i++)
+        //{
+        //    //double value = neuronOperation.Forward(layer.GetNeuron<Neuron>(i), input);
+        //    //output[i] = activationFunction.Output(value);
+        //}
 
-        return output;
+        return default;
     }
 
     public T GetNeuron<T>(int index)

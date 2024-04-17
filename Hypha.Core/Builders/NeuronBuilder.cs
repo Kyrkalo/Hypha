@@ -13,6 +13,6 @@ internal class NeuronBuilder : IBuilder<Neuron>
     public Neuron Build() => new()
     {
         Bias = 0.05,
-        Weights = Enumerable.Range(0, setup.WeightSize).Select(i => 0.005).ToArray()
+        Weights = Enumerable.Range(0, setup.Height).Select(i => 0.005).ToArray()
     };
 }
