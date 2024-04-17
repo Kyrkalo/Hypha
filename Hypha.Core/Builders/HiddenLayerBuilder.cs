@@ -18,7 +18,7 @@ internal class HiddenLayerBuilder : IBuilder<HiddenLayer>, IDisposable
 
         return new HiddenLayer()
         {
-            Neurons = Enumerable.Range(0, setup.NeuronSize).Select(i => neuronBuilder.Build()).ToArray()
+            Neurons = Enumerable.Range(0, setup.Width).Select(i => neuronBuilder.Build()).ToArray()
         };
     }
 

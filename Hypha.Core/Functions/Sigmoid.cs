@@ -1,6 +1,6 @@
 ﻿using Hypha.Interfaces;
 
-namespace Hypha.ActivationFunctions;
+namespace Hypha.Functions;
 
 internal class Sigmoid : IFunction
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hypha.Records
+﻿namespace Hypha.Records
 {
-    internal record Setup(int NeuronSize, int WeightSize, int LayerDeep);
+    internal record Setup(int Inputs, int Width, int Height, int Outputs);
 }
