@@ -17,15 +17,21 @@ internal class Builder
         inputLayerBuilder = new InputLayerBuilder();
     }
 
-    public void Create() => Hyphaflow = new Hyphaflow();
+    public Hyphaflow Build() => Hyphaflow;
 
-    public Hyphaflow Append(int height)
+    public Builder Create()
     {
-        Append(height, height);
-        return Hyphaflow;
+        Hyphaflow = new Hyphaflow() { Hypha = new Models.Model() };
+        return this;
     }
 
-    private Hyphaflow Append(int height, int connections)
+    public Builder AppendLayer(int height)
+    {
+        Append(height, height);
+        return this;
+    }
+
+    private Builder Append(int height, int connections)
     {
         if (Hyphaflow.Hypha.InputLayer is null || Hyphaflow.Hypha.InputLayer.Inputs.Length == 0)
         {
@@ -35,12 +41,12 @@ internal class Builder
         {
             Hyphaflow.Hypha.AppendHiddenLayer(hiddenLayerBuilder, new Records.Setup(height, connections));
         }
-        return Hyphaflow;
+        return this;
     }
 
-    public Hyphaflow AppendOutPutLayer(int height)
+    public Builder AppendOutputLayer(int height)
     {
         Hyphaflow.Hypha.AppendOutputLayer(outputLayerBuilder, new Records.Setup(height, 0));
-        return Hyphaflow;
+        return this;
     }
 }
