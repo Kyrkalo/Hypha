@@ -11,17 +11,16 @@ namespace Hypha.Core.Tests.Builders;
 public class OutputLayerBuilderTests
 {
     [Theory]
-    [InlineData(10, 11, 12, 13)]
-    [InlineData(10, 5, 12, 1)]
-    [InlineData(10, 5, 3, 4)]
-    [InlineData(10, 5, 3, 5)]
-    public void Test(int i, int w, int s, int t)
+    [InlineData(10, 11)]
+    [InlineData(9, 5)]
+    [InlineData(10, 7)]
+    [InlineData(10, 5)]
+    public void Build_Test(int height, int connections)
     {
         OutputLayerBuilder outputLayerBuilder = new();
-        outputLayerBuilder.Setup(new Setup(i, w, s, t));
-        var outputLayer = outputLayerBuilder.Build();
+        var outputLayer = outputLayerBuilder.Setup(new Setup(height, connections)).Build();
 
         Assert.NotNull(outputLayer);
-        Assert.True(outputLayer.Outputs.Length == t);
+        Assert.True(outputLayer.Outputs.Length == height);
     }
 }

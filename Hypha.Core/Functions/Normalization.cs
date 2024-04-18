@@ -1,5 +1,4 @@
 ﻿using Hypha.Interfaces;
-using System.Runtime.CompilerServices;
 
 namespace Hypha.Functions;
 

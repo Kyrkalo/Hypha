@@ -1,6 +1,6 @@
 ﻿namespace Hypha.Interfaces;
 
-internal interface IFunction
+public interface IFunction
 {
     double Output(double input);
 
