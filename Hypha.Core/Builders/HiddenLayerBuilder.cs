@@ -8,22 +8,28 @@ internal class HiddenLayerBuilder : IBuilder<HiddenLayer>, IDisposable
 {
     private Setup setup;
 
-    public void Setup(Setup setup) => this.setup = setup;
+    private readonly NeuronBuilder neuronBuilder;
+
+    public HiddenLayerBuilder() => neuronBuilder = new NeuronBuilder();
+
+    public IBuilder<HiddenLayer> Setup(Setup setup)
+    {
+        this.setup = setup;
+        neuronBuilder.Setup(setup);
+        return this;
+    }
 
     public HiddenLayer Build()
     {
-        var neuronBuilder = new NeuronBuilder();
-
-        neuronBuilder.Setup(setup);
-
-        return new HiddenLayer()
+        HiddenLayer hiddenLayer = new HiddenLayer() { Neurons = new Neuron[setup.Height] };
+        for (int i = 0; i < setup.Height; i++)
         {
-            Neurons = Enumerable.Range(0, setup.Width).Select(i => neuronBuilder.Build()).ToArray()
-        };
+            hiddenLayer.Neurons[i] = neuronBuilder.Setup(setup).Build();
+        }
+        return hiddenLayer;
     }
 
     public void Dispose()
     {
-        throw new NotImplementedException();
     }
 }

@@ -8,11 +8,15 @@ internal class NeuronBuilder : IBuilder<Neuron>
 {
     private Setup setup;
 
-    public void Setup(Setup setup) => this.setup = setup;
+    public IBuilder<Neuron> Setup(Setup setup)
+    {
+        this.setup = setup;
+        return this;
+    }
 
     public Neuron Build() => new()
     {
         Bias = 0.05,
-        Weights = Enumerable.Range(0, setup.Height).Select(i => 0.005).ToArray()
+        Weights = Enumerable.Range(0, setup.Connections).Select(i => 0.005).ToArray()
     };
 }

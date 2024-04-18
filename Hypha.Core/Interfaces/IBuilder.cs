@@ -4,7 +4,7 @@ namespace Hypha.Interfaces;
 
 internal interface IBuilder<T>
 {
-    void Setup(Setup setup);
+    IBuilder<T> Setup(Setup setup);
 
     T Build();
 }
