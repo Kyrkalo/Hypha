@@ -17,8 +17,8 @@ public class InputLayerBuilderTests
     [InlineData(1, 5)]
     public void Build_Test(int height, int connections)
     {
-        InputLayerBuilder inputLayerBuilder = new();
-        var inputLayer = inputLayerBuilder.Setup(new Setup(height, connections)).Build();
+        Hypha.Builders.Input.Builder inputLayerBuilder = new();
+        var inputLayer = inputLayerBuilder.Build(new Setup(height, connections));
 
         Assert.NotNull(inputLayer);
         Assert.True(inputLayer.Inputs.Length == height);

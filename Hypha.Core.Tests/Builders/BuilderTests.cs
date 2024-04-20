@@ -13,10 +13,10 @@ public class BuilderTests
     {
         var builder = new Builder();
         var hypha = builder.Create()
-            .AppendLayer(10)
-            .AppendLayer(20)
-            .AppendLayer(20)
-            .AppendOutputLayer(5)
+            .WithLayer(10)
+            .WithLayer(20)
+            .WithLayer(20)
+            .WithOutputLayer(5)
             .Build();
         Assert.NotNull(hypha);
     }
