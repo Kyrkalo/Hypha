@@ -12,11 +12,8 @@ internal class Builder : IBuilder<HiddenLayer>
 
     public HiddenLayer Build(Setup setup)
     {
-        HiddenLayer hiddenLayer = new() { Neurons = new Neuron[setup.Height] };
-        for (int i = 0; i < setup.Height; i++)
-        {
-            hiddenLayer.Neurons[i] = neuronBuilder.Build(setup);
-        }
-        return hiddenLayer;
+        HiddenLayer hidden = new();
+        hidden.Neurons = Enumerable.Range(0, setup.Height).Select(_ => neuronBuilder.Build(setup)).ToArray();
+        return hidden;
     }
 }

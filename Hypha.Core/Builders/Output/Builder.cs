@@ -12,11 +12,8 @@ internal class Builder : IBuilder<OutputLayer>
 
     public OutputLayer Build(Setup setup)
     {
-        OutputLayer outputLayer = new() { Outputs = new Neuron[setup.Height] };
-        for (int i = 0; i < setup.Height; i++)
-        {
-            outputLayer.Outputs[i] = neuronBuilder.Build(setup);
-        }
-        return outputLayer;
+        OutputLayer output = new();
+        output.Outputs = Enumerable.Range(0, setup.Height).Select(_ => neuronBuilder.Build(setup)).ToArray();
+        return output;
     }
 }
