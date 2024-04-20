@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hypha.Core.Tests.Builders;
+﻿namespace Hypha.Core.Tests.Builders;
 
 public class BuilderTests
 {
@@ -13,6 +7,8 @@ public class BuilderTests
     {
         var builder = new Builder();
         var hypha = builder.Create()
+            .WithActivationFunction(Enums.FunctionTypes.RelU)
+            .WithNormalizationFunction()
             .WithLayer(10)
             .WithLayer(20)
             .WithLayer(20)
