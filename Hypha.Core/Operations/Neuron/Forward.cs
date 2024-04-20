@@ -11,6 +11,7 @@ internal class Forward : IOperation<Models.Neuron, double>
         {
             result += input[i] * neuron.Weights[j];
         }
-        return result + neuron.Bias;
+        result += neuron.Bias;
+        return function.Output(result);
     }
 }
