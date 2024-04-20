@@ -1,10 +1,4 @@
-﻿using Hypha.Builders;
-using Hypha.Records;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Hypha.Records;
 
 namespace Hypha.Core.Tests.Builders;
 
@@ -17,8 +11,8 @@ public class OutputLayerBuilderTests
     [InlineData(10, 5)]
     public void Build_Test(int height, int connections)
     {
-        OutputLayerBuilder outputLayerBuilder = new();
-        var outputLayer = outputLayerBuilder.Setup(new Setup(height, connections)).Build();
+        Hypha.Builders.Output.Builder outputLayerBuilder = new();
+        var outputLayer = outputLayerBuilder.Build(new Setup(height, connections));
 
         Assert.NotNull(outputLayer);
         Assert.True(outputLayer.Outputs.Length == height);

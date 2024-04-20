@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Hypha.Interfaces;
 
-namespace Hypha.Interfaces;
-
-internal class IOperation
+internal interface IOperation<in T, out R>
 {
+    R Execute(IFunction function, T t, double[] input);
 }

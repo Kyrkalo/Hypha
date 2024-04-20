@@ -13,7 +13,7 @@ internal static class ModelExtensions
             return;
 
         model.InputLayer = null;
-        model.InputLayer = builder.Setup(setup).Build();
+        model.InputLayer = builder.Build(setup);
     }
 
     public static void AppendHiddenLayer(this Model model, IBuilder<HiddenLayer> builder, Setup setup)
@@ -38,7 +38,7 @@ internal static class ModelExtensions
             setup = new Setup(setup.Height, model.InputLayer.Inputs.Length);
         }
 
-        var hiddenLayer = builder.Setup(setup).Build();
+        var hiddenLayer = builder.Build(setup);
         model.HiddenLayers.Add(hiddenLayer);
     }
 
@@ -52,7 +52,7 @@ internal static class ModelExtensions
 
         var lastHiddenLayer = model.HiddenLayers.LastOrDefault() as HiddenLayer;
         setup = new Setup(setup.Height, lastHiddenLayer.Neurons.Length);
-        var outputLayer = builder.Setup(setup).Build();
+        var outputLayer = builder.Build(setup);
         model.OutputLayer = outputLayer;
     }
 }

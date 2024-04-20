@@ -1,23 +1,59 @@
 ﻿using Hypha.Builders;
 using Hypha.Extensions;
+using Hypha.Functions;
+using Hypha.Interfaces;
+using Hypha.Enums;
+using Hypha.Models;
 
 namespace Hypha;
 
 internal class Builder
 {
     private Hyphaflow Hyphaflow;
-    private readonly HiddenLayerBuilder hiddenLayerBuilder;
-    private readonly OutputLayerBuilder outputLayerBuilder;
-    private readonly InputLayerBuilder inputLayerBuilder;
+    private readonly IBuilder<HiddenLayer> hiddenLayerBuilder;
+    private readonly IBuilder<OutputLayer> outputLayerBuilder;
+    private readonly IBuilder<InputLayer> inputLayerBuilder;
 
     public Builder()
     {
-        hiddenLayerBuilder = new HiddenLayerBuilder();
-        outputLayerBuilder = new OutputLayerBuilder();
-        inputLayerBuilder = new InputLayerBuilder();
+        hiddenLayerBuilder = new Builders.Hidden.Builder();
+        outputLayerBuilder = new Builders.Output.Builder();
+        inputLayerBuilder = new Builders.Input.Builder();
     }
 
     public Hyphaflow Build() => Hyphaflow;
+
+    public Builder WithActivationFunction(IFunction function)
+    {
+        Hyphaflow.ActivationFunction = function;
+        return this;
+    }
+
+    public Builder WithActivationFunction(FunctionTypes function)
+    {
+        Hyphaflow.ActivationFunction = function switch
+        {
+            FunctionTypes.Tanh => new Tanh(),
+            FunctionTypes.Sigmoid => new Sigmoid(),
+            FunctionTypes.LeakyReLU => new LeakyReLU(),
+            FunctionTypes.RelU => new ReLU(),
+            _ => throw new ArgumentException("Invalid activation function type")
+        };
+
+        return this;
+    }
+
+    public Builder WithNormalizationFunction(IFunction function)
+    {
+        Hyphaflow.NormalizationFunction = function;
+        return this;
+    }
+
+    public Builder WithNormalizationFunction()
+    {
+        Hyphaflow.NormalizationFunction = new Normalization();
+        return this;
+    }
 
     public Builder Create()
     {
@@ -25,7 +61,7 @@ internal class Builder
         return this;
     }
 
-    public Builder AppendLayer(int height)
+    public Builder WithLayer(int height)
     {
         Append(height, height);
         return this;
@@ -44,7 +80,7 @@ internal class Builder
         return this;
     }
 
-    public Builder AppendOutputLayer(int height)
+    public Builder WithOutputLayer(int height)
     {
         Hyphaflow.Hypha.AppendOutputLayer(outputLayerBuilder, new Records.Setup(height, 0));
         return this;

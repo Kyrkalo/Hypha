@@ -11,9 +11,9 @@ namespace Hypha.Core.Tests.Operations;
 
 public class HiddenLayerOperationTests
 {
-    private readonly HiddenLayerOperation hiddenLayerOperation;
+    //private readonly HiddenLayerOperation hiddenLayerOperation;
 
-    public HiddenLayerOperationTests() => hiddenLayerOperation = new HiddenLayerOperation(new ReLU());
+    //public HiddenLayerOperationTests() => hiddenLayerOperation = new HiddenLayerOperation(new ReLU());
 
     //[Theory]
     //[InlineData(new double[] { 33, 12, 10, 1, 12, 12, 11, 11 })]
