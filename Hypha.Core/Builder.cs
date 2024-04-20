@@ -57,7 +57,7 @@ internal class Builder
 
     public Builder Create()
     {
-        Hyphaflow = new Hyphaflow() { Hypha = new Models.Model() };
+        Hyphaflow = new Hyphaflow();
         return this;
     }
 

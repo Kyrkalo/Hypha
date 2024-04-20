@@ -9,6 +9,8 @@ internal class Forward : IOperation<OutputLayer, double[]>
 
     public Forward(IOperation<Models.Neuron, double> neuronOperation) => this.neuronOperation = neuronOperation;
 
+    public string Name => nameof(OutputLayer);
+
     public double[] Execute(IFunction function, OutputLayer layer, double[] input)
     {
         if (layer == null)
