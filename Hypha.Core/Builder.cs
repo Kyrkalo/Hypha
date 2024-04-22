@@ -1,5 +1,4 @@
-﻿using Hypha.Builders;
-using Hypha.Extensions;
+﻿using Hypha.Extensions;
 using Hypha.Functions;
 using Hypha.Interfaces;
 using Hypha.Enums;
@@ -9,6 +8,8 @@ namespace Hypha;
 
 internal class Builder
 {
+    private readonly string version = "1.0";
+
     private Hyphaflow Hyphaflow;
     private readonly IBuilder<HiddenLayer> hiddenLayerBuilder;
     private readonly IBuilder<OutputLayer> outputLayerBuilder;
@@ -16,9 +17,9 @@ internal class Builder
 
     public Builder()
     {
-        hiddenLayerBuilder = new Builders.Hidden.Builder();
-        outputLayerBuilder = new Builders.Output.Builder();
-        inputLayerBuilder = new Builders.Input.Builder();
+        hiddenLayerBuilder = this.CreateBuilder<Builders.Hidden.Builder>(version, OperationTypes.Hidden);
+        outputLayerBuilder = this.CreateBuilder<Builders.Output.Builder>(version, OperationTypes.Output);
+        inputLayerBuilder = this.CreateBuilder<Builders.Input.Builder>(version, OperationTypes.Input);
     }
 
     public Hyphaflow Build() => Hyphaflow;

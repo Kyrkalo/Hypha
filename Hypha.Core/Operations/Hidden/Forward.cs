@@ -1,8 +1,11 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Attributes;
+using Hypha.Enums;
+using Hypha.Interfaces;
 using Hypha.Models;
 
 namespace Hypha.Operations.Hidden;
 
+[Operation("1.0", OperationTypes.Hidden, ExecutionTypes.Forward)]
 internal class Forward : IOperation<HiddenLayer, double[]>
 {
     private readonly IOperation<Models.Neuron, double> neuronOperation;

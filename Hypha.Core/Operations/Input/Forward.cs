@@ -1,8 +1,11 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Attributes;
+using Hypha.Enums;
+using Hypha.Interfaces;
 using Hypha.Models;
 
 namespace Hypha.Operations.Input;
 
+[Operation("1.0", OperationTypes.Input, ExecutionTypes.Forward)]
 internal class Forward : IOperation<InputLayer, double[]>
 {
     public string Name => nameof(InputLayer);

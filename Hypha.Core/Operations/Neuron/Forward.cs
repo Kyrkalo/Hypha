@@ -1,7 +1,10 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Attributes;
+using Hypha.Enums;
+using Hypha.Interfaces;
 
 namespace Hypha.Operations.Neuron;
 
+[Operation("1.0", OperationTypes.Neuron, ExecutionTypes.Forward)]
 internal class Forward : IOperation<Models.Neuron, double>
 {
     public string Name => nameof(Models.Neuron);
