@@ -1,9 +1,12 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Attributes;
+using Hypha.Enums;
+using Hypha.Interfaces;
 using Hypha.Models;
 using Hypha.Records;
 
 namespace Hypha.Builders.Hidden;
 
+[Builder("1.0", OperationTypes.Hidden)]
 internal class Builder : IBuilder<HiddenLayer>
 {
     private readonly Neurons.Builder neuronBuilder;
