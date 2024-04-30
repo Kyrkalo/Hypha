@@ -19,11 +19,11 @@ internal class Forward : IOperation<Model, double[]>
         {
             normalized = Output(function, item, normalized);
         }
-
+        normalized = Output(function, t.OutputLayer, normalized);
         return normalized;
     }
 
-    private double[] Output(IFunction function, HiddenLayer layer, double[] input)
+    private double[] Output(IFunction function, ILayer layer, double[] input)
     {
         var output = new double[layer.Neurons.Length];
         for(int i = 0; i < layer.Neurons.Length; ++i)

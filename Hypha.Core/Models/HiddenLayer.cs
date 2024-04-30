@@ -4,5 +4,5 @@ namespace Hypha.Models;
 
 internal class HiddenLayer : ILayer
 {
-    public Neuron[] Neurons { get; internal set; }
+    public Neuron[] Neurons { get; set; }
 }
