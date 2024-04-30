@@ -11,7 +11,12 @@ namespace Hypha.Functions;
 /// </summary>
 internal class LeakyReLU : IFunction
 {
-    public double Output(double value) => value < 0 ? 0.01 * value : value;
+    public double Backward(double input)
+    {
+        throw new NotImplementedException();
+    }
+
+    public double Activate(double value) => value < 0 ? 0.01 * value : value;
 
     public void Setup(double[] inputs) { }
 }

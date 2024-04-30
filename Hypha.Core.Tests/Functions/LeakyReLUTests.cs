@@ -12,7 +12,7 @@ public class LeakyReLUTests
     [InlineData(0)]
     public void Output_Input_Success(double input)
     {
-        var r = leakReLU.Output(input);
+        var r = leakReLU.Activate(input);
         Assert.True(r == input);
     }
 
@@ -21,7 +21,7 @@ public class LeakyReLUTests
     [InlineData(-0.01)]
     public void Output_InputNegative_Success(double input)
     {
-        var r = leakReLU.Output(input);
+        var r = leakReLU.Activate(input);
         Assert.True(r == input * 0.01);
     }
 }

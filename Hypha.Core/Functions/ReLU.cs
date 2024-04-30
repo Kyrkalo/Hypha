@@ -9,7 +9,12 @@ namespace Hypha.Functions;
 /// </summary>
 internal class ReLU : IFunction
 {
-    public double Output(double value) => Math.Max(0, value);
+    public double Backward(double input)
+    {
+        return input > 0 ? 1 : 0;
+    }
+
+    public double Activate(double value) => Math.Max(0, value);
 
     public void Setup(double[] inputs) { }
 }

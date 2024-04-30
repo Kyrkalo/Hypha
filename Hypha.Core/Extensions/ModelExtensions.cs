@@ -24,7 +24,7 @@ internal static class ModelExtensions
             throw new ArgumentException("Initialization error, input layer is not initialized");
 
         if (model.HiddenLayers == null)
-            model.HiddenLayers = new List<ILayer>();
+            model.HiddenLayers = new List<HiddenLayer>();
 
         var lastHiddenLayer = model.HiddenLayers.LastOrDefault() as HiddenLayer;
 

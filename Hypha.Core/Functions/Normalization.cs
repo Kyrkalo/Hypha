@@ -14,7 +14,12 @@ internal class Normalization : IFunction
 
     private double max;
 
-    public double Output(double value) => max == 0 || min == 0 ? 0 : (value - min) / (max - min);
+    public double Activate(double value) => max == 0 || min == 0 ? 0 : (value - min) / (max - min);
+
+    public double Backward(double input)
+    {
+        throw new NotImplementedException();
+    }
 
     public void Setup(double[] inputs) => (min, max) = (inputs.Min(), inputs.Max());
 }

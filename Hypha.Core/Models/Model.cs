@@ -1,12 +1,10 @@
-﻿using Hypha.Interfaces;
-
-namespace Hypha.Models;
+﻿namespace Hypha.Models;
 
 public class Model
 {
     internal InputLayer InputLayer { get; set; }
 
-    internal List<ILayer> HiddenLayers { get; set; }
+    internal List<HiddenLayer> HiddenLayers { get; set; }
 
     internal OutputLayer OutputLayer { get; set; }
 }
