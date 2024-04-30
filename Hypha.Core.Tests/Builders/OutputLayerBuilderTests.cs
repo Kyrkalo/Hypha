@@ -15,6 +15,6 @@ public class OutputLayerBuilderTests
         var outputLayer = outputLayerBuilder.Build(new Setup(height, connections));
 
         Assert.NotNull(outputLayer);
-        Assert.True(outputLayer.Outputs.Length == height);
+        Assert.True(outputLayer.Neurons.Length == height);
     }
 }

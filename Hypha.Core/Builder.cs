@@ -13,13 +13,11 @@ internal class Builder
     private Hyphaflow Hyphaflow;
     private readonly IBuilder<HiddenLayer> hiddenLayerBuilder;
     private readonly IBuilder<OutputLayer> outputLayerBuilder;
-    private readonly IBuilder<InputLayer> inputLayerBuilder;
 
     public Builder()
     {
         hiddenLayerBuilder = this.CreateBuilder<IBuilder<HiddenLayer>>(version, OperationTypes.Hidden);
         outputLayerBuilder = this.CreateBuilder<IBuilder<OutputLayer>>(version, OperationTypes.Output);
-        inputLayerBuilder = this.CreateBuilder<IBuilder<InputLayer>>(version, OperationTypes.Input);
     }
 
     public Hyphaflow Build() => Hyphaflow;
@@ -70,14 +68,7 @@ internal class Builder
 
     private Builder Append(int height, int connections)
     {
-        if (Hyphaflow.Hypha.InputLayer is null || Hyphaflow.Hypha.InputLayer.Inputs.Length == 0)
-        {
-            Hyphaflow.Hypha.CreateInputLayer(inputLayerBuilder, new Records.Setup(height, connections));
-        }
-        else
-        {
-            Hyphaflow.Hypha.AppendHiddenLayer(hiddenLayerBuilder, new Records.Setup(height, connections));
-        }
+        Hyphaflow.Hypha.AppendHiddenLayer(hiddenLayerBuilder, new Records.Setup(height, connections));
         return this;
     }
 
