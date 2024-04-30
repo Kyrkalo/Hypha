@@ -12,7 +12,7 @@ internal static class ModelExtensions
             return;
 
         if (model.HiddenLayers == null)
-            model.HiddenLayers = new List<HiddenLayer>();
+            model.HiddenLayers = new List<ILayer>();
 
         var lastHiddenLayer = model.HiddenLayers.LastOrDefault() as HiddenLayer;
 
@@ -34,10 +34,10 @@ internal static class ModelExtensions
         if (model == null)
             return;
 
-        if (model.HiddenLayers is null || model.HiddenLayers.Count == 0)
-            throw new ArgumentException("Initialization error, hidden layers are not initialized");
-
         var lastHiddenLayer = model.HiddenLayers.LastOrDefault() as HiddenLayer;
+        if (lastHiddenLayer == null)
+            throw new NullReferenceException("Hidden layers are not initialized.");
+
         setup = new Setup(setup.Height, lastHiddenLayer.Neurons.Length);
         var outputLayer = builder.Build(setup);
         model.OutputLayer = outputLayer;
