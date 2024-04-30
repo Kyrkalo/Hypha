@@ -17,7 +17,7 @@ internal class Forward : IOperation<Model, double[]>
         
         foreach (var item in t.HiddenLayers)
         {
-            normalized = Output(function, item, input);
+            normalized = Output(function, item, normalized);
         }
 
         return normalized;
@@ -25,7 +25,7 @@ internal class Forward : IOperation<Model, double[]>
 
     private double[] Output(IFunction function, HiddenLayer layer, double[] input)
     {
-        var output = new double[input.Length];
+        var output = new double[layer.Neurons.Length];
         for(int i = 0; i < layer.Neurons.Length; ++i)
         {
             output[i] = Output(function, layer.Neurons[i], input);
