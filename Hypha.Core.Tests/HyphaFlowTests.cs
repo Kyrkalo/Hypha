@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Hypha.Core.Tests;
+﻿namespace Hypha.Core.Tests;
 
 public class HyphaFlowTests
 {
@@ -20,6 +14,7 @@ public class HyphaFlowTests
             .WithOutputLayer(5)
             .Build();
     }
+
     [Theory]
     [InlineData(new double[] { 1 ,2 ,4, 3, 3, 4, 12, 3, 1, 12 })]
     public void Forward_Test(double[] input)
