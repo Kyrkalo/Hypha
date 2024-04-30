@@ -1,22 +1,17 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Extensions;
+using Hypha.Interfaces;
 using Hypha.Models;
 
 namespace Hypha;
 
 public class Hyphaflow
 {
-    private readonly IOperation<InputLayer, double[]> InputLayer;
-    private readonly IOperation<OutputLayer, double[]> OutputLayer;
-    private readonly IOperation<HiddenLayer, double[]> HiddenLayer;
-    private readonly IOperation<Models.Neuron, double> NeuronOperation;
+    private readonly IOperation<Model, double[]> operation;
 
-    internal Hyphaflow()
+    public Hyphaflow()
     {
         Hypha = new Model();
-        NeuronOperation = new Operations.Neuron.Forward();
-        InputLayer = new Operations.Input.Forward();
-        HiddenLayer = new Operations.Hidden.Forward(NeuronOperation);
-        OutputLayer = new Operations.Output.Forward(NeuronOperation);
+        operation = OperationExtensions.CreateOperation<IOperation<Model, double[]>>("1.0", Enums.ExecutionTypes.Forward);
     }
 
     /// <summary>
@@ -36,11 +31,6 @@ public class Hyphaflow
 
     public double[] Forward(double[] input)
     {
-        var output = InputLayer.Execute(NormalizationFunction, Hypha.InputLayer, input);
-        foreach(var item in Hypha.HiddenLayers)
-        {
-            output = HiddenLayer.Execute(ActivationFunction, item as HiddenLayer, output);
-        }
-        return OutputLayer.Execute(ActivationFunction, Hypha.OutputLayer, output);
+        return operation.Execute(NormalizationFunction, ActivationFunction, Hypha, input);
     }
 }

@@ -11,7 +11,13 @@ namespace Hypha.Functions;
 /// </summary>
 internal class Sigmoid : IFunction
 {
-    public double Output(double value) => 1 / (1 + Math.Exp(-value));
+    public double Backward(double input)
+    {
+        double sigmoidX = Activate(input);
+        return sigmoidX * (1 - sigmoidX);
+    }
+
+    public double Activate(double value) => 1 / (1 + Math.Exp(-value));
 
     public void Setup(double[] inputs) { }
 }

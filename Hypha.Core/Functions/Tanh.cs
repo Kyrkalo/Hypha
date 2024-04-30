@@ -10,7 +10,13 @@ namespace Hypha.Functions;
 /// </summary>
 internal class Tanh : IFunction
 {
-    public double Output(double value) => Math.Tanh(value);
+    public double Backward(double input)
+    {
+        double tanhX = Math.Tanh(input);
+        return 1 - (tanhX * tanhX);
+    }
+
+    public double Activate(double value) => Math.Tanh(value);
 
     public void Setup(double[] inputs) { }
 }

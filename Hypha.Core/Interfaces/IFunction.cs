@@ -2,7 +2,9 @@
 
 public interface IFunction
 {
-    double Output(double input);
+    double Activate(double input);
+
+    double Backward(double input);
 
     void Setup(double[] inputs);
 }

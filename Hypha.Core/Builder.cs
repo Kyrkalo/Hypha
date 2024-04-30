@@ -17,9 +17,9 @@ internal class Builder
 
     public Builder()
     {
-        hiddenLayerBuilder = this.CreateBuilder<Builders.Hidden.Builder>(version, OperationTypes.Hidden);
-        outputLayerBuilder = this.CreateBuilder<Builders.Output.Builder>(version, OperationTypes.Output);
-        inputLayerBuilder = this.CreateBuilder<Builders.Input.Builder>(version, OperationTypes.Input);
+        hiddenLayerBuilder = this.CreateBuilder<IBuilder<HiddenLayer>>(version, OperationTypes.Hidden);
+        outputLayerBuilder = this.CreateBuilder<IBuilder<OutputLayer>>(version, OperationTypes.Output);
+        inputLayerBuilder = this.CreateBuilder<IBuilder<InputLayer>>(version, OperationTypes.Input);
     }
 
     public Hyphaflow Build() => Hyphaflow;

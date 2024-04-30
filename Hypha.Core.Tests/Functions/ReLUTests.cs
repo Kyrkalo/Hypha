@@ -17,7 +17,7 @@ public class ReLUTests
     [InlineData(0)]
     public void Output_Input_Success(double input)
     {
-        var r = ReLU.Output(input);
+        var r = ReLU.Activate(input);
         Assert.True(r == input);
     }
 
@@ -26,7 +26,7 @@ public class ReLUTests
     [InlineData(-0.01)]
     public void Output_Input_Zero(double input)
     {
-        var r = ReLU.Output(input);
+        var r = ReLU.Activate(input);
         Assert.True(r == 0);
     }
 }

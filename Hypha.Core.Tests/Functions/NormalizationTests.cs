@@ -13,7 +13,7 @@ public class NormalizationTests
     {
         normalization.Setup(input);
 
-        var r = input.Select(item => normalization.Output(item));
+        var r = input.Select(item => normalization.Activate(item));
         Assert.All(r, x => Assert.True(x <= 1));
     }
 }
