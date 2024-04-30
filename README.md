@@ -1,6 +1,6 @@
 # Blog Series Repository: Hypha - Neural Network Fundamentals
 
-Welcome to the repository for our blog series on Neural Network Fundamentals!
+Welcome to the repository for our [blog series](https://romankyrkalo.hashnode.dev/the-neural-symphony-understanding-forward-propagation-in-ai) on Neural Network Fundamentals!
 
 ## Purpose
 
