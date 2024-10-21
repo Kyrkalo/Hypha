@@ -3,7 +3,7 @@
 namespace Hypha.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-internal class OperationAttribute : Attribute
+public class OperationAttribute : Attribute
 {
     public OperationAttribute(string version, ExecutionTypes executionTypes)
     {

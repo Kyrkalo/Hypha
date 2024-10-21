@@ -35,7 +35,12 @@ internal class Forward : IOperation<Model, double[]>
 
     private double Output(IFunction function, Models.Neuron neuron, double[] input)
     {
-        double result = input.Zip(neuron.Weights, (x, w) => x * w).Sum() + neuron.Bias;
-        return function.Activate(result);
+        double r = 0;
+        for(int i = 0; i < input.Length; ++ i)
+        {
+            r += neuron.Weights[i] * input[i];
+        }
+        r += neuron.Bias;
+        return function.Activate(r);
     }
 }

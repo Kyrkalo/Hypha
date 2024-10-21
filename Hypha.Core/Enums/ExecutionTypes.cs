@@ -1,6 +1,6 @@
 ﻿namespace Hypha.Enums;
 
-internal enum ExecutionTypes
+public enum ExecutionTypes
 {
     Forward,
     Backward,

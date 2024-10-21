@@ -8,15 +8,14 @@ public class HyphaFlowTests
         hyphaflow = new Builder().Create()
             .WithActivationFunction(Enums.FunctionTypes.RelU)
             .WithNormalizationFunction()
-            .WithLayer(10)
-            .WithLayer(20)
-            .WithLayer(20)
+            .WithLayer(5)
+            .WithLayer(5)
             .WithOutputLayer(5)
             .Build();
     }
 
     [Theory]
-    [InlineData(new double[] { 1 ,2 ,4, 3, 3, 4, 12, 3, 1, 12 })]
+    [InlineData(new double[] { 1 ,3 ,2, 3, 7 })]
     public void Forward_Test(double[] input)
     {
         var output = hyphaflow.Forward(input);
