@@ -1,4 +1,4 @@
 ﻿namespace Hypha.Records
 {
-    internal record Setup(int Height, int Connections);
+    internal record Setup(int Neurons, int Connections);
 }

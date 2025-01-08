@@ -13,14 +13,14 @@ internal class Forward : IOperation<Model, double[]>
     public double[] Execute(IFunction normalization, IFunction function, Model t, double[] input)
     {
         normalization.Setup(input);
-        var normalized = input.Select(e => normalization.Activate(e)).ToArray();
+        var values = input.Select(e => normalization.Activate(e)).ToArray();
         
         foreach (var item in t.HiddenLayers)
         {
-            normalized = Output(function, item, normalized);
+            values = Output(function, item, values);
         }
-        normalized = Output(function, t.OutputLayer, normalized);
-        return normalized;
+
+        return values;
     }
 
     private double[] Output(IFunction function, ILayer layer, double[] input)
