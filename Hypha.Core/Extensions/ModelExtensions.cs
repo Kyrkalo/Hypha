@@ -18,11 +18,11 @@ internal static class ModelExtensions
 
         if (lastHiddenLayer != null)
         {
-            setup = new Setup(setup.Height, lastHiddenLayer.Neurons.Length);
+            setup = new Setup(setup.Neurons, lastHiddenLayer.Neurons.Length);
         } 
         else
         {
-            setup = new Setup(setup.Height, setup.Height);
+            setup = new Setup(setup.Neurons, setup.Connections);
         }
 
         var hiddenLayer = builder.Build(setup);
@@ -38,7 +38,7 @@ internal static class ModelExtensions
         if (lastHiddenLayer == null)
             throw new NullReferenceException("Hidden layers are not initialized.");
 
-        setup = new Setup(setup.Height, lastHiddenLayer.Neurons.Length);
+        setup = new Setup(setup.Neurons, lastHiddenLayer.Neurons.Length);
         var outputLayer = builder.Build(setup);
         model.OutputLayer = outputLayer;
     }

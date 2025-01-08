@@ -60,21 +60,27 @@ internal class Builder
         return this;
     }
 
-    public Builder WithLayer(int height)
+    public Builder WithLayer(int neurons)
     {
-        Append(height, height);
+        Append(neurons, neurons);
         return this;
     }
 
-    private Builder Append(int height, int connections)
+    public Builder WithLayer(int connections, int neurons)
     {
-        Hyphaflow.Hypha.AppendHiddenLayer(hiddenLayerBuilder, new Records.Setup(height, connections));
+        Append(neurons, connections);
         return this;
     }
 
-    public Builder WithOutputLayer(int height)
+    private Builder Append(int neurons, int connections)
     {
-        Hyphaflow.Hypha.AppendOutputLayer(outputLayerBuilder, new Records.Setup(height, 0));
+        Hyphaflow.Hypha.AppendHiddenLayer(hiddenLayerBuilder, new Records.Setup(neurons, connections));
+        return this;
+    }
+
+    public Builder WithOutputLayer(int neurons)
+    {
+        Hyphaflow.Hypha.AppendOutputLayer(outputLayerBuilder, new Records.Setup(neurons, 0));
         return this;
     }
 }
