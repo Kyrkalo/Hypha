@@ -1,6 +1,7 @@
 ﻿using Hypha.Attributes;
 using Hypha.Enums;
 using Hypha.Interfaces;
+using Hypha.LinearAlgebra;
 using Hypha.Models;
 
 namespace Hypha.Operations;
@@ -28,19 +29,9 @@ internal class Forward : IOperation<Model, double[]>
         var output = new double[layer.Neurons.Length];
         for(int i = 0; i < layer.Neurons.Length; ++i)
         {
-            output[i] = Output(function, layer.Neurons[i], input);
+            output[i] = MatrixUtils.Dot(layer.Neurons[i].Weights, input) + layer.Neurons[i].Bias;
+            output[i] = function.Activate(output[i]);
         }
         return output;
-    }
-
-    private double Output(IFunction function, Models.Neuron neuron, double[] input)
-    {
-        double r = 0;
-        for(int i = 0; i < input.Length; ++ i)
-        {
-            r += neuron.Weights[i] * input[i];
-        }
-        r += neuron.Bias;
-        return function.Activate(r);
     }
 }
