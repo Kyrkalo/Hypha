@@ -82,4 +82,14 @@ internal static class MathUtils
 
         return result;
     }
+
+    public static double CrossEntropy()
+    {
+        return 0.0;
+    }
+
+    public static double Loss(double[] output, double[] target)
+    {
+        return -(output.Zip(target, (o, t) => Math.Log(o) * t).Sum());
+    }
 }
