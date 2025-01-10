@@ -4,7 +4,7 @@ namespace Hypha.Models;
 
 public class Model
 {
-    internal List<ILayer> HiddenLayers { get; set; }
+    internal List<ILayer> Layers { get; set; }
 
     internal ILayer OutputLayer { get; set; }
 }

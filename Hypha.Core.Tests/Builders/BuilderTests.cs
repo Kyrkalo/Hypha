@@ -7,11 +7,9 @@ public class BuilderTests
     {
         var builder = new Builder();
         var hypha = builder.Create()
-            .WithActivationFunction(Enums.FunctionTypes.RelU)
-            .WithNormalizationFunction()
-            .WithLayer(10)
-            .WithLayer(20)
-            .WithLayer(20)
+            .WithLayer(10, Enums.FunctionTypes.RelU)
+            .WithLayer(20, Enums.FunctionTypes.RelU)
+            .WithLayer(20, Enums.FunctionTypes.RelU)
             .WithOutputLayer(5)
             .Build();
         Assert.NotNull(hypha);

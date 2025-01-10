@@ -11,26 +11,22 @@ internal class Forward : IOperation<Model, double[]>
 {
     public string Name => throw new NotImplementedException();
 
-    public double[] Execute(IFunction normalization, IFunction function, Model t, double[] input)
-    {
-        normalization.Setup(input);
-        var values = input.Select(e => normalization.Activate(e)).ToArray();
-        
-        foreach (var item in t.HiddenLayers)
+    public double[] Execute(IFunction normalization, Model t, double[] input)
+    {        
+        foreach (var item in t.Layers)
         {
-            values = Output(function, item, values);
+            input = Calculate(item, input);
         }
-
-        return values;
+        return input;
     }
 
-    private double[] Output(IFunction function, ILayer layer, double[] input)
+    private double[] Calculate(ILayer layer, double[] input)
     {
         var output = new double[layer.Neurons.Length];
         for(int i = 0; i < layer.Neurons.Length; ++i)
         {
-            output[i] = MatrixUtils.Dot(layer.Neurons[i].Weights, input) + layer.Neurons[i].Bias;
-            output[i] = function.Activate(output[i]);
+            output[i] = layer.Neurons[i].Weights.Dot(input) + layer.Neurons[i].Bias;
+            output[i] = layer.ActivationFunction.Activate(output[i]);
         }
         return output;
     }

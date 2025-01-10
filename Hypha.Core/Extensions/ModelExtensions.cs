@@ -6,15 +6,15 @@ namespace Hypha.Extensions;
 
 internal static class ModelExtensions
 {
-    public static void AppendHiddenLayer(this Model model, IBuilder<HiddenLayer> builder, Setup setup)
+    public static void Layer(this Model model, IBuilder<Layer> builder, IFunction function, Setup setup)
     {
         if (model == null)
             return;
 
-        if (model.HiddenLayers == null)
-            model.HiddenLayers = new List<ILayer>();
+        if (model.Layers == null)
+            model.Layers = new List<ILayer>();
 
-        var lastHiddenLayer = model.HiddenLayers.LastOrDefault() as HiddenLayer;
+        var lastHiddenLayer = model.Layers.LastOrDefault() as Layer;
 
         if (lastHiddenLayer != null)
         {
@@ -26,7 +26,8 @@ internal static class ModelExtensions
         }
 
         var hiddenLayer = builder.Build(setup);
-        model.HiddenLayers.Add(hiddenLayer);
+        hiddenLayer.ActivationFunction = function;
+        model.Layers.Add(hiddenLayer);
     }
 
     public static void AppendOutputLayer(this Model model, IBuilder<OutputLayer> builder, Setup setup)
@@ -34,7 +35,7 @@ internal static class ModelExtensions
         if (model == null)
             return;
 
-        var lastHiddenLayer = model.HiddenLayers.LastOrDefault() as HiddenLayer;
+        var lastHiddenLayer = model.Layers.LastOrDefault() as Layer;
         if (lastHiddenLayer == null)
             throw new NullReferenceException("Hidden layers are not initialized.");
 

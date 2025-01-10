@@ -5,5 +5,7 @@ internal enum FunctionTypes
     Sigmoid,
     Tanh,
     RelU,
-    LeakyReLU
+    LeakyReLU,
+    Softmax,
+    Normalization
 }

@@ -7,15 +7,15 @@ using Hypha.Records;
 namespace Hypha.Builders.Hidden;
 
 [Builder("1.0", OperationTypes.Hidden)]
-internal class Builder : IBuilder<HiddenLayer>
+internal class Builder : IBuilder<Layer>
 {
     private readonly Neurons.Builder neuronBuilder;
 
     public Builder() => neuronBuilder = new Neurons.Builder();
 
-    public HiddenLayer Build(Setup setup)
+    public Layer Build(Setup setup)
     {
-        HiddenLayer hidden = new();
+        Layer hidden = new();
         hidden.Neurons = Enumerable.Range(0, setup.Neurons).Select(_ => neuronBuilder.Build(setup)).ToArray();
         return hidden;
     }
