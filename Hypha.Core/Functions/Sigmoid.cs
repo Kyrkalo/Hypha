@@ -17,7 +17,7 @@ internal class Sigmoid : IFunction
         return sigmoidX * (1 - sigmoidX);
     }
 
-    public double Activate(double value) => 1 / (1 + Math.Exp(-value));
+    public double Activate(double input) => 1 / (1 + Math.Exp(-input));
 
     public void Setup(double[] inputs) { }
 }

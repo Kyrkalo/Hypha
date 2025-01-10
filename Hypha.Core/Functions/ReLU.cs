@@ -11,7 +11,7 @@ internal class ReLU : IFunction
 {
     public double Backward(double input)
     {
-        return input > 0 ? 1 : 0;
+        return Math.Max(0, input);
     }
 
     public double Activate(double value) => Math.Max(0, value);
