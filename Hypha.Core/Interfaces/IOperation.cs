@@ -7,5 +7,5 @@ internal interface IOperation
 
 internal interface IOperation<in T, out R> : IOperation
 {
-    R Execute(IFunction normalization, IFunction function, T t, double[] input);
+    R Execute(IFunction normalization, T t, double[] input);
 }

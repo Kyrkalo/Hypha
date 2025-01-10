@@ -1,9 +1,5 @@
 ﻿using Hypha.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Hypha.LinearAlgebra;
 
 namespace Hypha.Functions;
 
@@ -14,10 +10,7 @@ namespace Hypha.Functions;
 /// </summary>
 internal class Softmax : IFunction
 {
-    public double Activate(double input)
-    {
-        throw new NotImplementedException();
-    }
+    public double Activate(double value) => value;
 
     public double Backward(double input)
     {
@@ -26,6 +19,18 @@ internal class Softmax : IFunction
 
     public void Setup(double[] inputs)
     {
-        throw new NotImplementedException();
+        var max = inputs.Max();
+
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            inputs[i] = Math.Exp(inputs[i] - max);
+        }
+
+        var sum = inputs.Sum();
+
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            inputs[i] = inputs[i] / sum;
+        }
     }
 }

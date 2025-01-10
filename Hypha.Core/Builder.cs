@@ -11,48 +11,27 @@ internal class Builder
     private readonly string version = "1.0";
 
     private Hyphaflow Hyphaflow;
-    private readonly IBuilder<HiddenLayer> hiddenLayerBuilder;
+    private readonly IBuilder<Layer> hiddenLayerBuilder;
     private readonly IBuilder<OutputLayer> outputLayerBuilder;
 
     public Builder()
     {
-        hiddenLayerBuilder = this.CreateBuilder<IBuilder<HiddenLayer>>(version, OperationTypes.Hidden);
+        hiddenLayerBuilder = this.CreateBuilder<IBuilder<Layer>>(version, OperationTypes.Hidden);
         outputLayerBuilder = this.CreateBuilder<IBuilder<OutputLayer>>(version, OperationTypes.Output);
     }
 
     public Hyphaflow Build() => Hyphaflow;
 
-    public Builder WithActivationFunction(IFunction function)
+    private IFunction WithActivationFunction(FunctionTypes function) => function switch
     {
-        Hyphaflow.ActivationFunction = function;
-        return this;
-    }
-
-    public Builder WithActivationFunction(FunctionTypes function)
-    {
-        Hyphaflow.ActivationFunction = function switch
-        {
-            FunctionTypes.Tanh => new Tanh(),
-            FunctionTypes.Sigmoid => new Sigmoid(),
-            FunctionTypes.LeakyReLU => new LeakyReLU(),
-            FunctionTypes.RelU => new ReLU(),
-            _ => throw new ArgumentException("Invalid activation function type")
-        };
-
-        return this;
-    }
-
-    public Builder WithNormalizationFunction(IFunction function)
-    {
-        Hyphaflow.NormalizationFunction = function;
-        return this;
-    }
-
-    public Builder WithNormalizationFunction()
-    {
-        Hyphaflow.NormalizationFunction = new Normalization();
-        return this;
-    }
+        FunctionTypes.Tanh => new Tanh(),
+        FunctionTypes.Sigmoid => new Sigmoid(),
+        FunctionTypes.LeakyReLU => new LeakyReLU(),
+        FunctionTypes.RelU => new ReLU(),
+        FunctionTypes.Normalization => new Normalization(),
+        FunctionTypes.Softmax => new Softmax(),
+        _ => throw new ArgumentException("Invalid activation function type")
+    };
 
     public Builder Create()
     {
@@ -60,21 +39,40 @@ internal class Builder
         return this;
     }
 
-    public Builder WithLayer(int neurons)
+    public Builder WithLayer(int neurons, IFunction function)
     {
-        Append(neurons, neurons);
+        Append(neurons, neurons, function);
         return this;
     }
 
-    public Builder WithLayer(int connections, int neurons)
+    public Builder WithLayer(int neurons, FunctionTypes functionType)
     {
-        Append(neurons, connections);
+        Append(neurons, neurons, functionType);
         return this;
     }
 
-    private Builder Append(int neurons, int connections)
+    public Builder WithLayer(int connections, int neurons, FunctionTypes functionType)
     {
-        Hyphaflow.Hypha.AppendHiddenLayer(hiddenLayerBuilder, new Records.Setup(neurons, connections));
+        Append(neurons, connections, functionType);
+        return this;
+    }
+
+    public Builder WithLayer(int connections, int neurons, IFunction function)
+    {
+        Append(neurons, connections, function);
+        return this;
+    }
+
+    private Builder Append(int neurons, int connections, FunctionTypes functionType)
+    {
+        var function = WithActivationFunction(functionType);
+        Hyphaflow.Hypha.Layer(hiddenLayerBuilder, function, new Records.Setup(neurons, connections));
+        return this;
+    }
+
+    private Builder Append(int neurons, int connections, IFunction function)
+    {
+        Hyphaflow.Hypha.Layer(hiddenLayerBuilder, function, new Records.Setup(neurons, connections));
         return this;
     }
 
