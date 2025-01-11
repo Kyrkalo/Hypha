@@ -130,4 +130,15 @@ public class HyphaFlowTests
         var output = hyphaflow.Forward(input);
         Assert.Equal(5, output.Length);
     }
+
+    [Fact]
+    public void Check_Data_Test()
+    {
+        Hyphaflow flow = new Builder().Create()
+            .WithLayer(3, 2, Enums.FunctionTypes.RelU)
+            .WithLayer(4, Enums.FunctionTypes.Softmax)
+            .Build();
+
+        flow.Forward(new double[] { });
+    }
 }

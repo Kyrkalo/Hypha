@@ -83,13 +83,15 @@ internal static class MathUtils
         return result;
     }
 
-    public static double CrossEntropy()
+    public static double[] Clip(double[] inputs, double min, double max)
     {
-        return 0.0;
+        double[] clipped = new double[inputs.Length];
+        for (int i = 0; i < inputs.Length; i++)
+        {
+            clipped[i] = Math.Max(min, Math.Min(inputs[i], max));
+        }
+        return clipped;
     }
 
-    public static double Loss(double[] output, double[] target)
-    {
-        return -(output.Zip(target, (o, t) => Math.Log(o) * t).Sum());
-    }
+    public static double Loss(double[] output, double[] target) => -output.Zip(target, (o, t) => Math.Log(o) * t).Sum();
 }
