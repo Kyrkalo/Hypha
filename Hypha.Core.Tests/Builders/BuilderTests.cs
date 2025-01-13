@@ -10,7 +10,6 @@ public class BuilderTests
             .WithLayer(10, Enums.FunctionTypes.RelU)
             .WithLayer(20, Enums.FunctionTypes.RelU)
             .WithLayer(20, Enums.FunctionTypes.RelU)
-            .WithOutputLayer(5)
             .Build();
         Assert.NotNull(hypha);
     }
