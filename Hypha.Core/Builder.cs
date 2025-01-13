@@ -12,12 +12,10 @@ internal class Builder
 
     private Hyphaflow Hyphaflow;
     private readonly IBuilder<Layer> hiddenLayerBuilder;
-    private readonly IBuilder<OutputLayer> outputLayerBuilder;
 
     public Builder()
     {
         hiddenLayerBuilder = this.CreateBuilder<IBuilder<Layer>>(version, OperationTypes.Hidden);
-        outputLayerBuilder = this.CreateBuilder<IBuilder<OutputLayer>>(version, OperationTypes.Output);
     }
 
     public Hyphaflow Build() => Hyphaflow;
@@ -73,12 +71,6 @@ internal class Builder
     private Builder Append(int neurons, int connections, IFunction function)
     {
         Hyphaflow.Hypha.Layer(hiddenLayerBuilder, function, new Records.Setup(neurons, connections));
-        return this;
-    }
-
-    public Builder WithOutputLayer(int neurons)
-    {
-        Hyphaflow.Hypha.AppendOutputLayer(outputLayerBuilder, new Records.Setup(neurons, 0));
         return this;
     }
 }

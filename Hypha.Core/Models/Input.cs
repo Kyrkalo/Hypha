@@ -8,4 +8,6 @@ internal class Input : IInput<Model>
     public double[] In { get; set; }
     public double[] Out { get; set; }
     public double[] Target { get; set; }
+    public double LearningRate { get; set; }
+    public IFunction ErrorFunction { get; set; }
 }

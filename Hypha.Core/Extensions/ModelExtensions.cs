@@ -26,21 +26,7 @@ internal static class ModelExtensions
         }
 
         var hiddenLayer = builder.Build(setup);
-        hiddenLayer.ActivationFunction = function;
+        hiddenLayer.SetFunction(function);
         model.Layers.Add(hiddenLayer);
-    }
-
-    public static void AppendOutputLayer(this Model model, IBuilder<OutputLayer> builder, Setup setup)
-    {
-        if (model == null)
-            return;
-
-        var lastHiddenLayer = model.Layers.LastOrDefault() as Layer;
-        if (lastHiddenLayer == null)
-            throw new NullReferenceException("Hidden layers are not initialized.");
-
-        setup = new Setup(setup.Neurons, lastHiddenLayer.Neurons.Length);
-        var outputLayer = builder.Build(setup);
-        model.OutputLayer = outputLayer;
     }
 }

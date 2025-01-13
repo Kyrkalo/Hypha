@@ -70,9 +70,6 @@ public class Hyphaflow
             In = input,
             Target = target,
         };
-
-        inputData.Out = forwardOperation.Execute(inputData);
-        new MeanSqueredError().Activate(new FunctionParameters { ArrayInput = input, ArrayTarget = target});
         backwardOperation.Execute(inputData);
     }
 }
