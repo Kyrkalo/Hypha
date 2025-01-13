@@ -2,9 +2,13 @@
 
 public interface IFunction
 {
-    double Activate(double input);
+    FunctionResult Activate(FunctionParameters parameters);
 
-    double Backward(double input);
-
-    void Setup(double[] inputs);
+    FunctionResult Derivative(FunctionParameters parameters);
 }
+
+//todo: temp solution
+public record FunctionParameters(double? SingleInput = null, double[] ArrayInput = null, double[] Input3 = null, double[] Input4 = null, double[] ArrayTarget = null);
+
+//todo: temp solution
+public record FunctionResult(double? SingleOutput = null, double[] ArrayOutput = null, double[][] Result3 = null);

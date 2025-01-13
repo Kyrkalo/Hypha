@@ -1,5 +1,4 @@
 ﻿using Hypha.Interfaces;
-using Hypha.LinearAlgebra;
 
 namespace Hypha.Functions;
 
@@ -10,27 +9,38 @@ namespace Hypha.Functions;
 /// </summary>
 internal class Softmax : IFunction
 {
-    public double Activate(double value) => value;
-
-    public double Backward(double input)
+    public FunctionResult Activate(FunctionParameters parameters)
     {
-        throw new NotImplementedException();
+        if (parameters.ArrayInput == null)
+        {
+            throw new ArgumentException("Softmax activation requires an array input.");
+        }
+
+        double[] input = parameters.ArrayInput;
+        double max = input.Max();
+        double[] expValues = input.Select(x => Math.Exp(x - max)).ToArray();
+        double sumExpValues = expValues.Sum();
+        double[] probabilities = expValues.Select(x => x / sumExpValues).ToArray();
+
+        return new FunctionResult { ArrayOutput = probabilities };
     }
 
-    public void Setup(double[] inputs)
+    public FunctionResult Derivative(FunctionParameters parameters)
     {
-        var max = inputs.Max();
-
-        for (int i = 0; i < inputs.Length; i++)
+        if (parameters.ArrayInput == null || parameters.ArrayTarget == null)
         {
-            inputs[i] = Math.Exp(inputs[i] - max);
+            throw new ArgumentException("Softmax backward requires array input and target.");
         }
 
-        var sum = inputs.Sum();
+        double[] predictions = parameters.ArrayInput;
+        double[] targets = parameters.ArrayTarget;
 
-        for (int i = 0; i < inputs.Length; i++)
+        if (predictions.Length != targets.Length)
         {
-            inputs[i] = inputs[i] / sum;
+            throw new ArgumentException("Predictions and targets must have the same length.");
         }
+
+        double[] gradients = predictions.Zip(targets, (yPred, yTrue) => yPred - yTrue).ToArray();
+        return new FunctionResult { ArrayOutput = gradients };
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Hypha.Extensions;
-using Hypha.Functions;
+using Hypha.Functions.Loss;
 using Hypha.Interfaces;
 using Hypha.Models;
 
@@ -7,12 +7,14 @@ namespace Hypha;
 
 public class Hyphaflow
 {
-    private readonly IOperation<Model, double[]> operation;
+    private readonly IOperation<Model, double[]> forwardOperation;
+    private readonly IOperation<Model, double[]> backwardOperation;
 
     public Hyphaflow()
     {
         Hypha = new Model();
-        operation = OperationExtensions.CreateOperation<IOperation<Model, double[]>>("1.0", Enums.ExecutionTypes.Forward);
+        forwardOperation = OperationExtensions.CreateOperation<IOperation<Model, double[]>>("1.0", Enums.ExecutionTypes.Forward);
+        backwardOperation = OperationExtensions.CreateOperation<IOperation<Model, double[]>>("1.0", Enums.ExecutionTypes.Backward);
     }
 
     /// <summary>
@@ -20,25 +22,57 @@ public class Hyphaflow
     /// </summary>
     internal Model Hypha { get; set; }
 
-    /// <summary>
-    /// Normalization function applied to the input data or intermediate layers of the model
-    /// </summary>
-    internal IFunction NormalizationFunction { get; set; }
-
     public double[] Forward(double[] input)
     {
-        var result = operation.Execute(NormalizationFunction, Hypha, input);
-
-        return result;
+        var forwardInput = new Input()
+        {
+            Model = Hypha,
+            In = input
+        };
+        return forwardOperation.Execute(forwardInput);
     }
 
-    public double[][] Forward(double[][] input)
+    public void Train(double[][] input, double[][] target, int steps)
     {
-        var result = new double[input.Length][];
-        for (int i = 0; i < input.Length; i++)
+        //for (int epoch = 0; epoch < epochs; epoch++)
+        //{
+        //    double totalLoss = 0;
+
+        //    for (int i = 0; i < input.Length; i++)
+        //    {
+        //        double[] output = forwardOperation.Execute(Hypha, input[i]);
+
+        //        totalLoss += CalculateLoss(output, target[i]);
+
+        //        // Backward pass
+        //        backwardOperation.Execute(input[i], target[i], output);
+        //    }
+
+        //    if (epoch % 100 == 0)
+        //    {
+        //        Console.WriteLine($"Epoch {epoch}/{epochs}, Loss: {totalLoss / input.Length}");
+        //    }
+        //}
+        for (int s = 0; s < steps; s++)
         {
-            result[i] = Forward(input[i]);
+            for (int i = 0; i < input.Length; i++)
+            {
+                Backward(input[i], target[i]);
+            }
         }
-        return result;
+    }
+
+    private void Backward(double[] input, double[] target)
+    {
+        var inputData = new Input()
+        {
+            Model = Hypha,
+            In = input,
+            Target = target,
+        };
+
+        inputData.Out = forwardOperation.Execute(inputData);
+        new MeanSqueredError().Activate(new FunctionParameters { ArrayInput = input, ArrayTarget = target});
+        backwardOperation.Execute(inputData);
     }
 }

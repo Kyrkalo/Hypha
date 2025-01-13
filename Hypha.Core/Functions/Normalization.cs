@@ -10,16 +10,28 @@ namespace Hypha.Functions;
 /// </summary>
 internal class Normalization : IFunction
 {
-    private double min;
-
-    private double max;
-
-    public double Activate(double value) => max == 0 || min == 0 ? 0 : (value - min) / (max - min);
-
-    public double Backward(double input)
+    public FunctionResult Activate(FunctionParameters parameters)
     {
-        throw new NotImplementedException();
+        if (parameters.SingleInput == null)
+        {
+            throw new ArgumentException("Normalization requires a single input.");
+        }
+        double input = parameters.SingleInput.Value;
+        double min = parameters.ArrayInput.Min();
+        double max = parameters.ArrayInput.Max();
+
+        double output = max == 0 || min == 0 ? 0 : (input - min) / (max - min);
+
+        return new FunctionResult { SingleOutput = output };
     }
 
-    public void Setup(double[] inputs) => (min, max) = (inputs.Min(), inputs.Max());
+    public FunctionResult Derivative(FunctionParameters parameters)
+    {
+        double min = parameters.ArrayInput.Min();
+        double max = parameters.ArrayInput.Max();
+
+        double derivative = 1 / (max - min);
+
+        return new FunctionResult { SingleOutput = derivative };
+    }
 }

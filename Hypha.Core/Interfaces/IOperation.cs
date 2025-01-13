@@ -5,7 +5,7 @@ internal interface IOperation
     string Name { get; }
 }
 
-internal interface IOperation<in T, out R> : IOperation
+internal interface IOperation<T, out R> : IOperation
 {
-    R Execute(IFunction normalization, T t, double[] input);
+    R Execute(IInput<T> t);
 }

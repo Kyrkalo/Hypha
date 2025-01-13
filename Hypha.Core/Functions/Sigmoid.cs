@@ -11,13 +11,27 @@ namespace Hypha.Functions;
 /// </summary>
 internal class Sigmoid : IFunction
 {
-    public double Backward(double input)
+    public FunctionResult Activate(FunctionParameters parameters)
     {
-        double sigmoidX = Activate(input);
-        return sigmoidX * (1 - sigmoidX);
+        if (parameters.SingleInput == null)
+        {
+            throw new ArgumentException("Sigmoid activation requires a single input.");
+        }
+
+        double input = parameters.SingleInput.Value;
+        double output = 1.0 / (1.0 + Math.Exp(-input));
+        return new FunctionResult { SingleOutput = output };
     }
 
-    public double Activate(double input) => 1 / (1 + Math.Exp(-input));
+    public FunctionResult Derivative(FunctionParameters parameters)
+    {
+        if (parameters.SingleInput == null)
+        {
+            throw new ArgumentException("Sigmoid backward requires a single output.");
+        }
 
-    public void Setup(double[] inputs) { }
+        double output = parameters.SingleInput.Value;
+        double gradient = output * (1 - output);
+        return new FunctionResult { SingleOutput = gradient };
+    }
 }
