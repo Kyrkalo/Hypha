@@ -27,8 +27,8 @@ internal class MeanSqueredError : IFunction
         if (parameters.ArrayInput == null || parameters.Input3 == null)
             throw new ArgumentException("Both predicted and target values must be provided.");
 
-        double[] predicted = parameters.Input3;
-        double[] target = parameters.Input4;
+        double[] predicted = parameters.ArrayInput;
+        double[] target = parameters.ArrayTarget;
 
         int n = predicted.Length;
 

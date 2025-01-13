@@ -1,5 +1,6 @@
 ﻿using Hypha.Attributes;
 using Hypha.Enums;
+using Hypha.Functions;
 using Hypha.Interfaces;
 using Hypha.LinearAlgebra;
 using Hypha.Models;
@@ -18,6 +19,13 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
     /// Function tocalculate error loss 
     /// </summary>
     private IFunction _errorFunction;
+
+    private IFunction linearTransform;
+
+    public Backward()
+    {
+        linearTransform = new LinearTransform();
+    }
 
     public void SetupOperationOptions(Option options)
     {
@@ -46,6 +54,7 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
     private double[][] Forward(IInput<Model> obj)
     {
         double[][] outputs = new double[obj.Model.Layers.Count][];
+
         for (int i = 0; i < obj.Model.Layers.Count; ++i)
         {
             var layer = obj.Model.Layers[i];
@@ -53,9 +62,12 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
 
             for (int j = 0; j < layer.Neurons.Length; ++j)
             {
-                var weights = layer.Neurons[j].Weights;
-                output[j] = weights.Dot(obj.In) + layer.Neurons[j].Bias;
-                var result = layer.Activate(new FunctionParameters { SingleInput = output[j] });
+                var neuron = layer.Neurons[j];
+                var linearOutput = linearTransform.Activate(new FunctionParameters()
+                { 
+                    SingleInput = neuron.Bias, ArrayWeight = neuron.Weights, ArrayInput = obj.In 
+                });
+                var result = layer.Activate(new FunctionParameters { SingleInput = linearOutput.SingleOutput.Value });
                 output[j] = result.SingleOutput.Value;
             }
             outputs[i] = output;
