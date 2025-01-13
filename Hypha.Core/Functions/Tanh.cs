@@ -10,7 +10,7 @@ namespace Hypha.Functions;
 /// </summary>
 internal class Tanh : IFunction
 {
-    public double Backward(double input)
+    public double Derivative(double input)
     {
         double tanhX = Math.Tanh(input);
         return 1 - (tanhX * tanhX);
@@ -19,4 +19,37 @@ internal class Tanh : IFunction
     public double Activate(double value) => Math.Tanh(value);
 
     public void Setup(double[] inputs) { }
+
+    public FunctionResult Activate(FunctionParameters parameters)
+    {
+        if (parameters.SingleInput.HasValue)
+        {
+            double activated = Math.Tanh(parameters.SingleInput.Value);
+            return new FunctionResult { SingleOutput = activated };
+        }
+        else if (parameters.ArrayInput != null)
+        {
+            double[] activatedArray = parameters.ArrayInput.Select(Math.Tanh).ToArray();
+            return new FunctionResult { ArrayOutput = activatedArray };
+        }
+        throw new ArgumentException("Invalid parameters for Tanh activation.");
+    }
+
+    public FunctionResult Derivative(FunctionParameters parameters)
+    {
+        if (parameters.SingleInput.HasValue)
+        {
+            double tanhValue = Math.Tanh(parameters.SingleInput.Value);
+            double gradient = 1 - Math.Pow(tanhValue, 2);
+            return new FunctionResult { SingleOutput = gradient };
+        }
+        else if (parameters.ArrayInput != null)
+        {
+            double[] gradients = parameters.ArrayInput
+                .Select(x => 1 - Math.Pow(Math.Tanh(x), 2))
+                .ToArray();
+            return new FunctionResult { ArrayOutput = gradients };
+        }
+        throw new ArgumentException("Invalid parameters for Tanh backward.");
+    }
 }

@@ -11,13 +11,13 @@ internal class Forward : IOperation<Model, double[]>
 {
     public string Name => throw new NotImplementedException();
 
-    public double[] Execute(IFunction normalization, Model t, double[] input)
+    public double[] Execute(IInput<Model> obj)
     {        
-        foreach (var item in t.Layers)
+        foreach (var item in obj.Model.Layers)
         {
-            input = Calculate(item, input);
+            obj.In = Calculate(item, obj.In);
         }
-        return input;
+        return obj.In;
     }
 
     private double[] Calculate(ILayer layer, double[] input)
@@ -26,7 +26,8 @@ internal class Forward : IOperation<Model, double[]>
         for(int i = 0; i < layer.Neurons.Length; ++i)
         {
             output[i] = layer.Neurons[i].Weights.Dot(input) + layer.Neurons[i].Bias;
-            output[i] = layer.ActivationFunction.Activate(output[i]);
+            var result = layer.ActivationFunction.Activate(new FunctionParameters() { SingleInput = output[i] });
+            output[i] = result.SingleOutput.Value;
         }
         return output;
     }

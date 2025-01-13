@@ -9,12 +9,33 @@ namespace Hypha.Functions;
 /// </summary>
 internal class ReLU : IFunction
 {
-    public double Backward(double input)
+    public FunctionResult Activate(FunctionParameters parameters)
     {
-        return Math.Max(0, input);
+        if (parameters.SingleInput.HasValue)
+        {
+            double activated = Math.Max(0, parameters.SingleInput.Value);
+            return new FunctionResult { SingleOutput = activated };
+        }
+        else if (parameters.ArrayInput != null)
+        {
+            double[] activatedArray = parameters.ArrayInput.Select(x => Math.Max(0, x)).ToArray();
+            return new FunctionResult { ArrayOutput = activatedArray };
+        }
+        throw new ArgumentException("Invalid parameters for ReLU activation.");
     }
 
-    public double Activate(double value) => Math.Max(0, value);
-
-    public void Setup(double[] inputs) { }
+    public FunctionResult Derivative(FunctionParameters parameters)
+    {
+        if (parameters.SingleInput.HasValue)
+        {
+            double gradient = parameters.SingleInput.Value > 0 ? 1.0 : 0.0;
+            return new FunctionResult { SingleOutput = gradient };
+        }
+        else if (parameters.ArrayInput != null)
+        {
+            double[] gradients = parameters.ArrayInput.Select(x => x > 0 ? 1.0 : 0.0).ToArray();
+            return new FunctionResult { ArrayOutput = gradients };
+        }
+        throw new ArgumentException("Invalid parameters for ReLU backward.");
+    }
 }

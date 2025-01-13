@@ -11,12 +11,41 @@ namespace Hypha.Functions;
 /// </summary>
 internal class LeakyReLU : IFunction
 {
-    public double Backward(double input)
+    private double alpha = 0.01;  // Leak factor (default 0.01)
+
+    public FunctionResult Activate(FunctionParameters param)
     {
-        throw new NotImplementedException();
+        if (param.SingleInput != null)
+        {
+            return new(SingleOutput: param.SingleInput.Value < 0 ? alpha * param.SingleInput.Value : param.SingleInput.Value);
+        }
+        else if (param.ArrayInput != null)
+        {
+            return new (ArrayOutput: param.ArrayInput.Select(e => e > 0 ? e : alpha * e).ToArray());
+        }
+        else
+        {
+            throw new ArgumentException("Invalid input parameters.");
+        }
     }
 
-    public double Activate(double value) => value < 0 ? 0.01 * value : value;
+    public FunctionResult Derivative(FunctionParameters parameters)
+    {
+        if (parameters.SingleInput != null)
+        {
+            var result = parameters.SingleInput.Value > 0 ? 1 : alpha;
+            return new FunctionResult(SingleOutput: result);
+        }
+        else if (parameters.ArrayInput != null)
+        {
+            var result = parameters.ArrayInput.Select(x => x > 0 ? 1 : alpha).ToArray();
+            return new FunctionResult(ArrayOutput: result);
+        }
+        else
+        {
+            throw new ArgumentException("Invalid input parameters.");
+        }
+    }
 
     public void Setup(double[] inputs) { }
 }

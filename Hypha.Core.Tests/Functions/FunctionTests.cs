@@ -14,8 +14,8 @@ public class FunctionTests
     [InlineData(new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 })]
     public void Output_Input_Normalization_Success(double[] input)
     {
-        normalization.Setup(input);
-        var r = input.Select(item => normalization.Activate(item));
+        var r = input.Select(item => normalization.Activate(new Interfaces.FunctionParameters { ArrayInput = input, SingleInput = item}))
+            .Select(e => e.SingleOutput);
         Assert.All(r, x => Assert.True(x <= 1));
     }
 
@@ -23,9 +23,8 @@ public class FunctionTests
     [InlineData(new double[] { 4.8, 1.21,2.385 })]
     public void Check_Softmax_Values_Success(double[] input)
     {
-        softmax.Setup(input);
-        var r = input.Select(item => softmax.Activate(item));
-        Assert.All(r, x => Assert.True(x <= 1));
+        var result = softmax.Activate(new Interfaces.FunctionParameters { ArrayInput = input }).ArrayOutput;
+        Assert.All(result, x => Assert.True(x <= 1));
     }
 
     [Theory]
@@ -34,7 +33,7 @@ public class FunctionTests
     [InlineData(0)]
     public void Output_Input_LeakyRelu_Success(double input)
     {
-        var r = leakReLU.Activate(input);
+        var r = leakReLU.Activate(new Interfaces.FunctionParameters() { SingleInput = input }).SingleOutput;
         Assert.True(r == input);
     }
 
@@ -43,7 +42,7 @@ public class FunctionTests
     [InlineData(-0.01)]
     public void Output_InputNegative_LeakyRelu_Success(double input)
     {
-        var r = leakReLU.Activate(input);
+        var r = leakReLU.Activate(new Interfaces.FunctionParameters() { SingleInput = input }).SingleOutput;
         Assert.True(r == input * 0.01);
     }
 
@@ -54,7 +53,7 @@ public class FunctionTests
     [InlineData(0)]
     public void Output_Input_ReLU_Success(double input)
     {
-        var r = ReLU.Activate(input);
+        var r = ReLU.Activate(new Interfaces.FunctionParameters() { SingleInput = input }).SingleOutput;
         Assert.True(r == input);
     }
 
@@ -63,7 +62,7 @@ public class FunctionTests
     [InlineData(-0.01)]
     public void Output_Input_ReLU_Zero(double input)
     {
-        var r = ReLU.Activate(input);
+        var r = ReLU.Activate(new Interfaces.FunctionParameters() { SingleInput = input }).SingleOutput;
         Assert.True(r == 0);
     }
 }
