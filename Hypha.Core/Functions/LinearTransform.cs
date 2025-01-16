@@ -1,4 +1,4 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 using Hypha.LinearAlgebra;
 
 namespace Hypha.Functions;
@@ -6,9 +6,9 @@ namespace Hypha.Functions;
 /// <summary>
 /// LinearTransform used in forward propagation before applying the activation function.
 /// </summary>
-internal class LinearTransform : IFunction
+internal class LinearTransform : IFunction, IActivationFunction
 {
-    public FunctionResult Activate(FunctionParameters parameters)
+    public FunctionResult Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput != null && parameters.ArrayInput != null && parameters.ArrayWeight != null)
         {
@@ -16,10 +16,5 @@ internal class LinearTransform : IFunction
             return new FunctionResult(SingleOutput: output.Value);
         }
         throw new ArgumentException("Missing bias, weights and inputs values.");
-    }
-
-    public FunctionResult Derivative(FunctionParameters parameters)
-    {
-        throw new NotImplementedException();
     }
 }

@@ -1,17 +1,16 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions.Loss;
 
 /// <summary>
 /// Loss function: Mean Squared Error (MSE)
 /// </summary>
-internal class MeanSqueredError : IFunction
+internal class MeanSqueredError : IFunction, ILossFunction, IDerivativeFunction
 {
-
-    public FunctionResult Activate(FunctionParameters param)
+    FunctionResult ILossFunction.Execute(FunctionParameters parameters)
     {
-        var output = param.ArrayInput;
-        var target = param.ArrayTarget;
+        var output = parameters.ArrayInput;
+        var target = parameters.ArrayTarget;
 
         double loss = 0;
         for (int i = 0; i < output.Length; i++)
@@ -22,7 +21,7 @@ internal class MeanSqueredError : IFunction
         return new FunctionResult(loss);
     }
 
-    public FunctionResult Derivative(FunctionParameters parameters)
+    FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.ArrayInput == null || parameters.Input3 == null)
             throw new ArgumentException("Both predicted and target values must be provided.");
@@ -39,10 +38,5 @@ internal class MeanSqueredError : IFunction
         }
 
         return new FunctionResult(ArrayOutput: gradient);
-    }
-
-    public void Setup(double[] inputs)
-    {
-        throw new NotImplementedException();
     }
 }

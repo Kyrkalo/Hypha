@@ -1,4 +1,4 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions;
 
@@ -9,9 +9,9 @@ namespace Hypha.Functions;
 /// As the input increases, the output of the sigmoid function approaches 1.
 /// Similarly, as the input decreases, the output approaches 0.
 /// </summary>
-internal class Sigmoid : IFunction
+internal class Sigmoid : IFunction, IActivationFunction, IDerivativeFunction
 {
-    public FunctionResult Activate(FunctionParameters parameters)
+    FunctionResult IActivationFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput == null)
         {
@@ -23,7 +23,7 @@ internal class Sigmoid : IFunction
         return new FunctionResult { SingleOutput = output };
     }
 
-    public FunctionResult Derivative(FunctionParameters parameters)
+    FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput == null)
         {

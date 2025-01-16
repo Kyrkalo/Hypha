@@ -1,11 +1,6 @@
-﻿namespace Hypha.Interfaces;
+﻿namespace Hypha.Functions.Interfaces;
 
-public interface IFunction
-{
-    FunctionResult Activate(FunctionParameters parameters);
-
-    FunctionResult Derivative(FunctionParameters parameters);
-}
+public interface IFunction { }
 
 //todo: temp solution
 public record FunctionParameters(double? SingleInput = null, double[] ArrayInput = null, double[] Input3 = null, double[] ArrayWeight = null, double[] ArrayTarget = null);

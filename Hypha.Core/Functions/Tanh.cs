@@ -1,4 +1,4 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions;
 
@@ -8,19 +8,9 @@ namespace Hypha.Functions;
 /// It maps any real-valued number to a value between -1 and 1.
 /// As the input increases, the output of the tanh function approaches 1.
 /// </summary>
-internal class Tanh : IFunction
+internal class Tanh : IFunction, IActivationFunction, IDerivativeFunction
 {
-    public double Derivative(double input)
-    {
-        double tanhX = Math.Tanh(input);
-        return 1 - (tanhX * tanhX);
-    }
-
-    public double Activate(double value) => Math.Tanh(value);
-
-    public void Setup(double[] inputs) { }
-
-    public FunctionResult Activate(FunctionParameters parameters)
+    FunctionResult IActivationFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput.HasValue)
         {
@@ -35,7 +25,7 @@ internal class Tanh : IFunction
         throw new ArgumentException("Invalid parameters for Tanh activation.");
     }
 
-    public FunctionResult Derivative(FunctionParameters parameters)
+    FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput.HasValue)
         {

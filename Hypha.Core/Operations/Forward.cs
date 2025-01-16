@@ -1,8 +1,8 @@
 ﻿using Hypha.Attributes;
 using Hypha.Enums;
 using Hypha.Functions;
+using Hypha.Functions.Interfaces;
 using Hypha.Interfaces;
-using Hypha.LinearAlgebra;
 using Hypha.Models;
 
 namespace Hypha.Operations;
@@ -10,7 +10,7 @@ namespace Hypha.Operations;
 [Operation("1.0", ExecutionTypes.Forward)]
 internal class Forward : IOperation<Model, double[]>
 {
-    private readonly IFunction linearTransform;
+    private readonly IActivationFunction linearTransform;
 
     public Forward()
     {
@@ -31,7 +31,7 @@ internal class Forward : IOperation<Model, double[]>
         var output = new double[layer.Neurons.Length];
         for(int i = 0; i < layer.Neurons.Length; ++i)
         {
-            var linearOutput = linearTransform.Activate(new FunctionParameters() 
+            var linearOutput = linearTransform.Execute(new FunctionParameters() 
             {
                 SingleInput = layer.Neurons[i].Bias,
                 ArrayWeight = layer.Neurons[i].Weights,

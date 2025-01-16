@@ -1,4 +1,4 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions;
 
@@ -9,19 +9,19 @@ namespace Hypha.Functions;
 /// The function returns x if x is positive and a small fraction (usually a constant like 0.01) of x if x is negative.
 /// Leaky ReLU(x) = x if x >= 0, else alpha * x where alpha is a small positive constant. 
 /// </summary>
-internal class LeakyReLU : IFunction
+internal class LeakyReLU : IFunction, IActivationFunction, IDerivativeFunction
 {
     private double alpha = 0.01;  // Leak factor (default 0.01)
 
-    public FunctionResult Activate(FunctionParameters param)
+    FunctionResult IActivationFunction.Execute(FunctionParameters parameters)
     {
-        if (param.SingleInput != null)
+        if (parameters.SingleInput != null)
         {
-            return new(SingleOutput: param.SingleInput.Value < 0 ? alpha * param.SingleInput.Value : param.SingleInput.Value);
+            return new(SingleOutput: parameters.SingleInput.Value < 0 ? alpha * parameters.SingleInput.Value : parameters.SingleInput.Value);
         }
-        else if (param.ArrayInput != null)
+        else if (parameters.ArrayInput != null)
         {
-            return new (ArrayOutput: param.ArrayInput.Select(e => e > 0 ? e : alpha * e).ToArray());
+            return new(ArrayOutput: parameters.ArrayInput.Select(e => e > 0 ? e : alpha * e).ToArray());
         }
         else
         {
@@ -29,7 +29,7 @@ internal class LeakyReLU : IFunction
         }
     }
 
-    public FunctionResult Derivative(FunctionParameters parameters)
+    FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput != null)
         {
@@ -46,6 +46,4 @@ internal class LeakyReLU : IFunction
             throw new ArgumentException("Invalid input parameters.");
         }
     }
-
-    public void Setup(double[] inputs) { }
 }

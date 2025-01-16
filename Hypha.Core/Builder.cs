@@ -3,6 +3,7 @@ using Hypha.Functions;
 using Hypha.Interfaces;
 using Hypha.Enums;
 using Hypha.Models;
+using Hypha.Functions.Interfaces;
 
 namespace Hypha;
 
