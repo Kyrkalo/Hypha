@@ -1,26 +1,26 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions.Loss;
 
-public class CrossEntropy : ILoss
+public class CrossEntropy : ILossFunction
 {
-    public double Execute(double[] output, double[] target)
+    FunctionResult ILossFunction.Execute(FunctionParameters parameters)
     {
-        int length = output.Length;
+        int length = parameters.ArrayInput.Length;
         double[] clippedOutput = new double[length];
 
         for (int i = 0; i < length; i++)
         {
-            clippedOutput[i] = Math.Clamp(output[i], 1e-7, 1 - 1e-7);
+            clippedOutput[i] = Math.Clamp(parameters.ArrayInput[i], 1e-7, 1 - 1e-7);
         }
 
         double loss = 0;
 
         for (int i = 0; i < length; i++)
         {
-            loss += target[i] * Math.Log(clippedOutput[i]);
+            loss += parameters.ArrayTarget[i] * Math.Log(clippedOutput[i]);
         }
 
-        return -loss;
+        return new FunctionResult() { SingleOutput = -loss };
     }
 }

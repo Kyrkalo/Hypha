@@ -1,4 +1,4 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions;
 
@@ -7,9 +7,9 @@ namespace Hypha.Functions;
 /// It introduces non-linearity by returning 0 for negative inputs and leaving positive inputs unchanged.
 /// If the input is greater than 0, ReLU returns the input value. If the input is negative, ReLU returns 0.
 /// </summary>
-internal class ReLU : IFunction
+internal class ReLU : IFunction, IActivationFunction, IDerivativeFunction
 {
-    public FunctionResult Activate(FunctionParameters parameters)
+    FunctionResult IActivationFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput.HasValue)
         {
@@ -24,7 +24,7 @@ internal class ReLU : IFunction
         throw new ArgumentException("Invalid parameters for ReLU activation.");
     }
 
-    public FunctionResult Derivative(FunctionParameters parameters)
+    FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput.HasValue)
         {

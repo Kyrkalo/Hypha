@@ -1,5 +1,4 @@
 ﻿using Hypha.Extensions;
-using Hypha.Functions.Loss;
 using Hypha.Interfaces;
 using Hypha.Models;
 

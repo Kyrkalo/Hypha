@@ -1,3 +1,5 @@
-﻿namespace Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
-public record Option(IFunction ErrorFunction, double LearningRate = 0.01);
+namespace Hypha.Interfaces;
+
+public record Option(ILossFunction ErrorFunction, double LearningRate = 0.01);

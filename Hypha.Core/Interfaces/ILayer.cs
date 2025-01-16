@@ -1,4 +1,5 @@
-﻿using Hypha.Models;
+﻿using Hypha.Functions.Interfaces;
+using Hypha.Models;
 
 namespace Hypha.Interfaces;
 

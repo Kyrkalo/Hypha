@@ -1,4 +1,4 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions;
 
@@ -8,9 +8,9 @@ namespace Hypha.Functions;
 /// It subtracts the minimum value from each input value and then divides by the range (max - min).
 /// This ensures that all input values fall within the 0 to 1 range.
 /// </summary>
-internal class Normalization : IFunction
+internal class Normalization : IFunction, IActivationFunction, IDerivativeFunction
 {
-    public FunctionResult Activate(FunctionParameters parameters)
+    FunctionResult IActivationFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.SingleInput == null)
         {
@@ -25,7 +25,7 @@ internal class Normalization : IFunction
         return new FunctionResult { SingleOutput = output };
     }
 
-    public FunctionResult Derivative(FunctionParameters parameters)
+    FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
         double min = parameters.ArrayInput.Min();
         double max = parameters.ArrayInput.Max();

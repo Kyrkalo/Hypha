@@ -1,4 +1,4 @@
-﻿using Hypha.Interfaces;
+﻿using Hypha.Functions.Interfaces;
 
 namespace Hypha.Functions;
 
@@ -7,9 +7,9 @@ namespace Hypha.Functions;
 /// neural network for classification tasks. It converts raw scores (logits) 
 /// into probabilities, ensuring the sum of probabilities equals 1.
 /// </summary>
-internal class Softmax : IFunction
+internal class Softmax : IFunction, IActivationFunction, IDerivativeFunction
 {
-    public FunctionResult Activate(FunctionParameters parameters)
+    FunctionResult IActivationFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.ArrayInput == null)
         {
@@ -25,7 +25,7 @@ internal class Softmax : IFunction
         return new FunctionResult { ArrayOutput = probabilities };
     }
 
-    public FunctionResult Derivative(FunctionParameters parameters)
+    FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
         if (parameters.ArrayInput == null || parameters.ArrayTarget == null)
         {
