@@ -12,6 +12,7 @@ internal class Builder
     private readonly string version = "1.0";
 
     private Hyphaflow Hyphaflow;
+
     private readonly IBuilder<Layer> hiddenLayerBuilder;
 
     public Builder()

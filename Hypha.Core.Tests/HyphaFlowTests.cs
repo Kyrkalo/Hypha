@@ -118,7 +118,12 @@ public class HyphaFlowTests
     [InlineData(new double[] { 1 ,3 ,2, 3, 7 })]
     public void Forward_Test(double[] input)
     {
-        var output = hyphaflow.Forward(input);
+        var  model = new Builder().Create()
+            .WithLayer(5, Enums.FunctionTypes.Sigmoid)
+            .WithLayer(5, Enums.FunctionTypes.Sigmoid)
+            .Build();
+
+        var output = model.Forward(input);
         Assert.Equal(5, output.Length);
     }
 }

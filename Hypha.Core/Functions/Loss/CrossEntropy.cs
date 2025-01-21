@@ -2,7 +2,7 @@
 
 namespace Hypha.Functions.Loss;
 
-public class CrossEntropy : ILossFunction
+public class CrossEntropy : IFunction, ILossFunction
 {
     FunctionResult ILossFunction.Execute(FunctionParameters parameters)
     {

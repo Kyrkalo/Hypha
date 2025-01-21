@@ -1,4 +1,5 @@
 ﻿using Hypha.Extensions;
+using Hypha.Functions;
 using Hypha.Interfaces;
 using Hypha.Models;
 
@@ -8,12 +9,16 @@ public class Hyphaflow
 {
     private readonly IOperation<Model, double[]> forwardOperation;
     private readonly IOperation<Model, double[]> backwardOperation;
+    private readonly FunctionManager functionManager;
 
     public Hyphaflow()
     {
         Hypha = new Model();
+        functionManager = new FunctionManager();
         forwardOperation = OperationExtensions.CreateOperation<IOperation<Model, double[]>>("1.0", Enums.ExecutionTypes.Forward);
         backwardOperation = OperationExtensions.CreateOperation<IOperation<Model, double[]>>("1.0", Enums.ExecutionTypes.Backward);
+        SetFunctionReferences(forwardOperation);
+        SetFunctionReferences(backwardOperation);
     }
 
     /// <summary>
@@ -70,5 +75,13 @@ public class Hyphaflow
             Target = target,
         };
         backwardOperation.Execute(inputData);
+    }
+
+    private void SetFunctionReferences(object operation)
+    {
+        if (operation != null && operation is IOperationOption operationOption)
+        {
+            operationOption.SetupOperationOptions(functionManager);
+        }
     }
 }
