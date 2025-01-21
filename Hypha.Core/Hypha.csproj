@@ -7,8 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Functions\Activation\" />
-    <Folder Include="Functions\Derivative\" />
+    <Compile Remove="Functions\Activation\**" />
+    <Compile Remove="Functions\Derivative\**" />
+    <EmbeddedResource Remove="Functions\Activation\**" />
+    <EmbeddedResource Remove="Functions\Derivative\**" />
+    <None Remove="Functions\Activation\**" />
+    <None Remove="Functions\Derivative\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Interfaces\Functions\" />
   </ItemGroup>
 

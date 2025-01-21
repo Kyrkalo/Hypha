@@ -1,6 +1,8 @@
-﻿namespace Hypha.Interfaces;
+﻿using Hypha.Functions;
+
+namespace Hypha.Interfaces;
 
 internal interface IOperationOption
 {
-    void SetupOperationOptions(Option options);
+    void SetupOperationOptions(FunctionManager functionManager);
 }

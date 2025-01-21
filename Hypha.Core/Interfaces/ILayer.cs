@@ -1,5 +1,4 @@
-﻿using Hypha.Functions.Interfaces;
-using Hypha.Models;
+﻿using Hypha.Models;
 
 namespace Hypha.Interfaces;
 
@@ -7,9 +6,7 @@ internal interface ILayer
 {
     Neuron[] Neurons { get; set; }
 
-    void SetFunction(IFunction function);
+    string ActivationFunctionName { get; set; }
 
-    FunctionResult Activate(FunctionParameters parameters);
-
-    FunctionResult Derivative(FunctionParameters parameters);
+    string DerivativeFunctionName { get; set; }
 }

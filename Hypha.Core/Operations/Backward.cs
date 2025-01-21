@@ -2,6 +2,7 @@
 using Hypha.Enums;
 using Hypha.Functions;
 using Hypha.Functions.Interfaces;
+using Hypha.Functions.Loss;
 using Hypha.Interfaces;
 using Hypha.LinearAlgebra;
 using Hypha.Models;
@@ -14,24 +15,24 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
     /// <summary>
     /// learning rate
     /// </summary>
-    private double _learningRate;
+    private double _learningRate = 0.05;
 
     /// <summary>
     /// Function tocalculate error loss 
     /// </summary>
     private ILossFunction _errorFunction;
 
-    private IActivationFunction linearTransform;
+    private IActivationFunction linearTransform = new LinearTransform();
 
-    public Backward()
-    {
-        linearTransform = new LinearTransform();
-    }
+    private Dictionary<string, IActivationFunction> _activationFunc;
 
-    public void SetupOperationOptions(Option options)
+    private Dictionary<string, IDerivativeFunction> _derivativeFunc;
+
+    public void SetupOperationOptions(FunctionManager functionManager)
     {
-        _errorFunction = options.ErrorFunction;
-        _learningRate = options.LearningRate;
+        _errorFunction = functionManager.GetGroupFunctions<MeanSqueredError>().FirstOrDefault();
+        _activationFunc = functionManager.GetGroupFunctions<IActivationFunction>().ToDictionary(k => k.GetType().Name, v => v);
+        _derivativeFunc = functionManager.GetGroupFunctions<IDerivativeFunction>().ToDictionary(k => k.GetType().Name, v => v);
     }
 
     public double[] Execute(IInput<Model> obj)
@@ -68,7 +69,9 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
                 { 
                     SingleInput = neuron.Bias, ArrayWeight = neuron.Weights, ArrayInput = obj.In 
                 });
-                var result = layer.Activate(new FunctionParameters { SingleInput = linearOutput.SingleOutput.Value });
+                var activationHash = _activationFunc[layer.ActivationFunctionName];
+                var param = new FunctionParameters { SingleInput = linearOutput.SingleOutput.Value };
+                var result = activationHash.Execute(param);
                 output[j] = result.SingleOutput.Value;
             }
             outputs[i] = output;
@@ -83,7 +86,9 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
 
         for (int i = 0; i < layer.Neurons.Length; i++)
         {
-            var result = layer.Derivative(new FunctionParameters { SingleInput = outputs[i] });
+            var param = new FunctionParameters { SingleInput = outputs[i] };
+            var derivative  = _derivativeFunc[layer.DerivativeFunctionName];
+            var result = derivative.Execute(param);
 
             gradients[i] = errors[i] * result.SingleOutput.Value;
 
