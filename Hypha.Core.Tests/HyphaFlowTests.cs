@@ -126,4 +126,16 @@ public class HyphaFlowTests
         var output = model.Forward(input);
         Assert.Equal(5, output.Length);
     }
+
+    [Theory]
+    [InlineData(new double[] { 1, 3, 2, 3, 7 }, new double[] {1, 0, 0})]
+    public void Backward_Test(double[] input, double[] target)
+    {
+        var model = new Builder().Create()
+            .WithLayer(5, Enums.FunctionTypes.Sigmoid)
+            .WithLayer(3, Enums.FunctionTypes.Sigmoid)
+            .Build();
+
+        model.Train(new double[][] { input }, new double[][] { target }, 100000);
+    }
 }

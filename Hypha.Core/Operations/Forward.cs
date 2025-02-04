@@ -34,16 +34,17 @@ internal class Forward : IOperation<Model, double[]>, IOperationOption
         var output = new double[layer.Neurons.Length];
         for(int i = 0; i < layer.Neurons.Length; ++i)
         {
-            var linearOutput = _linearTransform.Execute(new FunctionParameters() 
+            var param = new FunctionParameters()
             {
                 SingleInput = layer.Neurons[i].Bias,
                 ArrayWeight = layer.Neurons[i].Weights,
                 ArrayInput = input
+            };
+            var result = _linearTransform.Execute(param);
 
-            });
-            var activationFunction = _activationFunc[layer.ActivationFunctionName];
-            var param = new FunctionParameters() { SingleInput = linearOutput.SingleOutput };
-            var result = activationFunction.Execute(param);
+            param = new FunctionParameters() { SingleInput = result.SingleOutput };
+            result = _activationFunc[layer.FunctionName].Execute(param);
+
             output[i] = result.SingleOutput.Value;
         }
         return output;
