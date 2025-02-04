@@ -23,7 +23,7 @@ internal class MeanSqueredError : IFunction, ILossFunction, IDerivativeFunction
 
     FunctionResult IDerivativeFunction.Execute(FunctionParameters parameters)
     {
-        if (parameters.ArrayInput == null || parameters.Input3 == null)
+        if (parameters.ArrayInput == null || parameters.ArrayTarget == null)
             throw new ArgumentException("Both predicted and target values must be provided.");
 
         double[] predicted = parameters.ArrayInput;
@@ -34,7 +34,10 @@ internal class MeanSqueredError : IFunction, ILossFunction, IDerivativeFunction
         double[] gradient = new double[predicted.Length];
         for (int i = 0; i < predicted.Length; i++)
         {
-            gradient[i] = 2.0 / n * (predicted[i] - target[i]);
+            //gradient[i] = 2.0 / n * (predicted[i] - target[i]);
+
+            //todo: For simplicity, omits the 2/n which can be absorbed into the learning rate
+            gradient[i] = predicted[i] - target[i];
         }
 
         return new FunctionResult(ArrayOutput: gradient);

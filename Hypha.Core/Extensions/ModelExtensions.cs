@@ -27,7 +27,7 @@ internal static class ModelExtensions
         }
 
         var hiddenLayer = builder.Build(setup);
-        hiddenLayer.ActivationFunctionName = function.GetType().Name;
+        hiddenLayer.FunctionName = function.GetType().Name;
         model.Layers.Add(hiddenLayer);
     }
 }

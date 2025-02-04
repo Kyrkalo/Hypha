@@ -4,7 +4,6 @@ using Hypha.Functions;
 using Hypha.Functions.Interfaces;
 using Hypha.Functions.Loss;
 using Hypha.Interfaces;
-using Hypha.LinearAlgebra;
 using Hypha.Models;
 
 namespace Hypha.Operations;
@@ -20,9 +19,9 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
     /// <summary>
     /// Function tocalculate error loss 
     /// </summary>
-    private ILossFunction _errorFunction;
+    private IDerivativeFunction _errorFunction;
 
-    private IActivationFunction linearTransform = new LinearTransform();
+    private readonly IActivationFunction linearTransform = new LinearTransform();
 
     private Dictionary<string, IActivationFunction> _activationFunc;
 
@@ -36,14 +35,21 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
     }
 
     public double[] Execute(IInput<Model> obj)
-    {
-        var outputs = Forward(obj);
-        var param = new FunctionParameters { ArrayInput = obj.In, ArrayTarget = obj.Target };
-        var functionResult = _errorFunction.Execute(param);
-        var errors = functionResult.ArrayOutput;
+    {        
+        var inputs = new double[obj.Model.Layers.Count][];
+        var outputs = new double[obj.Model.Layers.Count][];   
+        
+        Forward(obj, ref inputs, ref outputs);
+
+        //todo: Compute Initial Error for Output Layer
+        var param = new FunctionParameters { ArrayInput = outputs.LastOrDefault(), ArrayTarget = obj.Target };
+        var result = _errorFunction.Execute(param);
+
+        var errors = result.ArrayOutput;
+
         for (int i = obj.Model.Layers.Count - 1; i >= 0; i--)
         {
-            errors = BackwardOperation(obj.Model.Layers[i], errors, _learningRate, outputs[i]);
+            errors = BackwardOperation(obj.Model.Layers[i], errors, _learningRate, inputs[i], outputs[i]);
         }
         return null;
     }
@@ -53,51 +59,63 @@ internal class Backward : IOperation<Model, double[]>, IOperationOption
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    private double[][] Forward(IInput<Model> obj)
+    private void Forward(IInput<Model> obj, ref double[][] inputs, ref double[][] outputs)
     {
-        double[][] outputs = new double[obj.Model.Layers.Count][];
-
         for (int i = 0; i < obj.Model.Layers.Count; ++i)
         {
+            inputs[i] = obj.In;
+
             var layer = obj.Model.Layers[i];
             var output = new double[layer.Neurons.Length];
 
             for (int j = 0; j < layer.Neurons.Length; ++j)
             {
-                var neuron = layer.Neurons[j];
-                var linearOutput = linearTransform.Execute(new FunctionParameters()
-                { 
-                    SingleInput = neuron.Bias, ArrayWeight = neuron.Weights, ArrayInput = obj.In 
-                });
-                var activationHash = _activationFunc[layer.ActivationFunctionName];
-                var param = new FunctionParameters { SingleInput = linearOutput.SingleOutput.Value };
-                var result = activationHash.Execute(param);
+                var param = new FunctionParameters() { SingleInput = layer.Neurons[j].Bias, ArrayWeight = layer.Neurons[j].Weights, ArrayInput = obj.In };
+                var result = linearTransform.Execute(param);
+
+                param = new FunctionParameters { SingleInput = result.SingleOutput.Value };
+                result = _activationFunc[layer.FunctionName].Execute(param);
+
                 output[j] = result.SingleOutput.Value;
             }
-            outputs[i] = output;
+
+            outputs[i] = obj.In = output;
         }
-        return outputs;
     }
 
-    public double[] BackwardOperation(ILayer layer, double[] errors, double learningRate, double[] outputs)
+
+    /// <summary>
+    /// Layer-level operation
+    /// </summary>
+    /// <param name="layer"></param>
+    /// <param name="errors"></param>
+    /// <param name="learningRate"></param>
+    /// <param name="outputs"></param>
+    /// <returns></returns>
+    private double[] BackwardOperation(ILayer layer, double[] errors, double learningRate, double[] inputs, double[] outputs)
     {
+        //todo: Stores gradients of each neuron in this layer.
         double[] gradients = new double[layer.Neurons.Length];
+
+        //todo: Stores gradients for the previous layer (used for backpropagation).
         double[] inputGradients = new double[layer.Neurons[0].Weights.Length];
 
         for (int i = 0; i < layer.Neurons.Length; i++)
         {
             var param = new FunctionParameters { SingleInput = outputs[i] };
-            var derivative  = _derivativeFunc[layer.DerivativeFunctionName];
-            var result = derivative.Execute(param);
-
-            gradients[i] = errors[i] * result.SingleOutput.Value;
+            var gradient = errors[i] * _derivativeFunc[layer.FunctionName].Execute(param).SingleOutput.Value;
+            gradients[i] = gradient;
 
             for (int j = 0; j < layer.Neurons[i].Weights.Length; j++)
             {
-                inputGradients[j] += gradients[i] * layer.Neurons[i].Weights[j];
-                layer.Neurons[i].Weights[j] -= learningRate * gradients[i] * outputs[j];
+                //todo: How much each neuron's activation contributed to the error.
+                inputGradients[j] += gradient * layer.Neurons[i].Weights[j];
+
+                //todo: Update weights using gradient descent
+                layer.Neurons[i].Weights[j] -= learningRate * gradient * inputs[j];
             }
-            layer.Neurons[i].Bias -= learningRate * gradients[i];
+            //todo: Update biase using gradient descent
+            layer.Neurons[i].Bias -= learningRate * gradient;
         }
 
         return inputGradients;
